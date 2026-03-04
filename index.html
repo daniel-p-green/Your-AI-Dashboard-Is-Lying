@@ -232,10 +232,10 @@
 
     /* Toggle */
     .mode-switch {
-      position: fixed;
+      position: absolute;
       top: 24px;
       right: 24px;
-      z-index: 100;
+      z-index: 20;
       display: flex;
       gap: 4px;
       background: var(--surface);
@@ -1379,11 +1379,6 @@
     <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <div class="mode-switch" role="group" aria-label="Theme toggle">
-    <button aria-pressed="true" onclick="sw('dark',this)">Dark</button>
-    <button aria-pressed="false" onclick="sw('light',this)">Light</button>
-  </div>
-
   <nav class="chapter-nav" id="chapterNav" aria-label="Chapter navigation">
     <a href="#home" data-chapter-link><span class="tooltip">Home</span></a>
     <a href="#setup" data-chapter-link><span class="tooltip">The Setup</span></a>
@@ -1402,6 +1397,10 @@
     <!-- ========== HERO ========== -->
     <div class="hero" id="home">
       <div class="hero-bg-glow" aria-hidden="true"></div>
+      <div class="mode-switch" role="group" aria-label="Theme toggle">
+        <button aria-pressed="true" onclick="sw('dark',this)">Dark</button>
+        <button aria-pressed="false" onclick="sw('light',this)">Light</button>
+      </div>
       <div class="hero-label reveal stagger-1">The Measurement Problem</div>
       <h1 class="reveal stagger-2">Your AI Dashboard<br>Is <em>Lying</em> to You</h1>
       <p class="hero-sub reveal stagger-3">The real signal is not usage. It is deletion: which reports stopped being
