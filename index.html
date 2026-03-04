@@ -709,12 +709,24 @@
 
     .dc-src {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 10.5px;
       color: var(--text-tertiary);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.15px;
       border-top: 1px solid var(--border);
       padding-top: 12px;
       margin-top: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dc-src a {
+      display: inline-block;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
     }
 
     /* Truth Strip - BIGGER labels */
@@ -1117,9 +1129,9 @@
       padding: 40px 32px;
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      display: grid;
+      grid-template-rows: auto minmax(2.6em, auto) 1fr;
+      gap: 10px;
       transition: background 0.3s;
       position: relative;
     }
@@ -1148,14 +1160,17 @@
       font-size: 28px;
       color: var(--text-primary);
       line-height: 1.2;
-      text-wrap: pretty;
-      min-height: 2.4em;
+      text-wrap: balance;
+      min-height: 2.6em;
+      max-width: 15.5ch;
     }
 
     .step-cell-desc {
       font-size: 17px;
       color: var(--text-tertiary);
       line-height: 1.55;
+      text-wrap: pretty;
+      max-width: 28ch;
     }
 
     /* Closing */
@@ -1192,12 +1207,16 @@
     }
 
     .closing-coda {
-      font-size: clamp(24px, 2.2vw, 32px);
+      font-size: clamp(18px, 1.7vw, 24px);
       color: var(--text-primary);
-      max-width: 30ch;
-      line-height: 1.35;
+      max-width: 38ch;
+      line-height: 1.4;
       margin: 0 auto;
       text-wrap: balance;
+    }
+
+    #sources .s-title {
+      max-width: 860px;
     }
 
     /* Sources */
@@ -1333,7 +1352,7 @@
       }
 
       .closing-coda {
-        font-size: clamp(21px, 5.6vw, 26px);
+        font-size: clamp(19px, 5.3vw, 24px);
         max-width: 24ch;
       }
 
@@ -1892,7 +1911,7 @@
   <section id="sources" aria-labelledby="sources-title">
       <div class="s-header reveal">
         <div class="s-label">Sources &amp; Further Reading</div>
-        <h2 class="s-title" id="sources-title" style="font-size:32px;">The article behind this dashboard.</h2>
+        <h2 class="s-title" id="sources-title">The article behind this dashboard.</h2>
       </div>
 
       <div class="card sources-card reveal">
