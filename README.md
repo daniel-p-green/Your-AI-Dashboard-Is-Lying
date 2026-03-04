@@ -41,6 +41,17 @@ python3 -m http.server 8000
 
 Open: <http://localhost:8000>
 
+### Refresh Hero JPGs
+
+```bash
+./scripts/capture-hero.sh
+```
+
+Optional knobs:
+- `PORT=8766 ./scripts/capture-hero.sh`
+- `VIEWPORT=1920,1440 ./scripts/capture-hero.sh`
+- `WAIT_MS=1600 ./scripts/capture-hero.sh`
+
 ### Deploy
 
 GitHub Pages serves directly from the `main` branch root.
@@ -51,3 +62,4 @@ Push to `main` to publish updates.
 - `index.html`: full page content, styles, and behavior
 - `assets/hero-dark.jpg`: compressed dark-mode hero screenshot
 - `assets/hero-light.jpg`: compressed light-mode hero screenshot
+- `scripts/capture-hero.sh`: regenerate both hero screenshots for README/social previews
