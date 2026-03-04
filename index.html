@@ -1385,6 +1385,7 @@
   </div>
 
   <nav class="chapter-nav" id="chapterNav" aria-label="Chapter navigation">
+    <a href="#home" data-chapter-link><span class="tooltip">Home</span></a>
     <a href="#setup" data-chapter-link><span class="tooltip">The Setup</span></a>
     <a href="#thirty-k" data-chapter-link><span class="tooltip">30,000 Feet</span></a>
     <a href="#paradox" data-chapter-link><span class="tooltip">Core Paradox</span></a>
@@ -1399,7 +1400,7 @@
 
   <main id="main-content">
     <!-- ========== HERO ========== -->
-    <div class="hero">
+    <div class="hero" id="home">
       <div class="hero-bg-glow" aria-hidden="true"></div>
       <div class="hero-label reveal stagger-1">The Measurement Problem</div>
       <h1 class="reveal stagger-2">Your AI Dashboard<br>Is <em>Lying</em> to You</h1>
@@ -2077,7 +2078,10 @@
       window.addEventListener('scroll', updateProgress, { passive: true });
 
       const chapterNav = document.getElementById('chapterNav');
-      const sections = Array.from(document.querySelectorAll('section[id]'));
+      const sections = [
+        document.getElementById('home'),
+        ...Array.from(document.querySelectorAll('section[id]'))
+      ].filter(Boolean);
       const chapterLinks = Array.from(document.querySelectorAll('[data-chapter-link]'));
 
       const heroEl = document.querySelector('.hero');
