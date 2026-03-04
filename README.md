@@ -2,7 +2,7 @@
 
 Working visual companion for Eric Porres' essay, originally published as a guest post on Jeremy Utley's blog.
 
-![Hero preview](assets/thumbnail.jpg)
+![Hero preview (dark mode)](assets/hero-dark.jpg)
 
 ## Quick Links
 
@@ -49,4 +49,5 @@ Push to `main` to publish updates.
 ### Main Files
 
 - `index.html`: full page content, styles, and behavior
-- `assets/thumbnail.jpg`: compressed README preview image
+- `assets/hero-dark.jpg`: compressed dark-mode hero screenshot
+- `assets/hero-light.jpg`: compressed light-mode hero screenshot
