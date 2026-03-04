@@ -1,1211 +1,2048 @@
 <!DOCTYPE html>
 <html lang="en" data-mode="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050505">
-<meta name="description" content="Visual companion to Eric Porres' essay on measuring AI transformation through deletion, not usage.">
-<title>Your AI Dashboard Is Lying to You | Eric Porres</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --red: #ff4d4d;
-  --red-glow: rgba(255, 77, 77, 0.35);
-  --green: #2ecc71;
-  --green-dim: rgba(46, 204, 113, 0.15);
-  --amber: #f1c40f;
-  --amber-dim: rgba(241, 196, 15, 0.15);
-  --teal: #00d2d3;
-  --teal-dim: rgba(0, 210, 211, 0.15);
-  --blue: #54a0ff;
-  --blue-dim: rgba(84, 160, 255, 0.15);
-  --purple: #a55eea;
-  --purple-dim: rgba(165, 94, 234, 0.15);
-  --coral: #ff9f43;
-  --coral-dim: rgba(255, 159, 67, 0.15);
-  --spacing-xs: 8px;
-  --spacing-sm: 16px;
-  --spacing-md: 32px;
-  --spacing-lg: 64px;
-  --spacing-xl: 128px;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --motion-fast: 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  --motion-med: 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  --motion-slow: 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-[data-mode="dark"] {
-  --bg: #050505;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #181818 0%, #050505 100%);
-  --surface: #141414;
-  --surface-hover: #1e1e1e;
-  --border: rgba(255, 255, 255, 0.12);
-  --border-hover: rgba(255, 255, 255, 0.24);
-  --text-primary: #f8f8f8;
-  --text-secondary: #d0d0d0;
-  --text-tertiary: #b5b5b5;
-  --shadow: 0 16px 60px rgba(0, 0, 0, 0.7);
-  --card-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
-[data-mode="light"] {
-  --bg: #f5f5f7;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #e8ecf3 100%);
-  --surface: #ffffff;
-  --surface-hover: #f9fafb;
-  --border: rgba(15, 23, 42, 0.08);
-  --border-hover: rgba(15, 23, 42, 0.18);
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-tertiary: #6b7280;
-  --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-  --card-shadow: 0 10px 35px rgba(15,23,42,0.06);
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: var(--bg);
-  background-image: var(--bg-gradient);
-  color: var(--text-secondary);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  transition: background .4s, color .4s;
-  min-height: 100vh;
-}
-.skip-link {
-  position: absolute; left: 16px; top: -48px; z-index: 999;
-  background: var(--surface); color: var(--text-primary);
-  border: 1px solid var(--border); padding: 8px 16px;
-  border-radius: 100px; font-size: 14px;
-  transition: top var(--motion-fast);
-}
-.skip-link:focus-visible { top: 16px; }
-a {
-  color: var(--teal);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
-}
-a:hover { color: var(--red); text-decoration-color: var(--red); }
-:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 8px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description"
+    content="Visual companion to Jeremy Utley's and Eric Porres' essay on measuring AI transformation through deletion, not usage.">
+  <title>Your AI Dashboard Is Lying to You | Jeremy Utley + Eric Porres</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --red: #ff4d4d;
+      --red-glow: rgba(255, 77, 77, 0.35);
+      --green: #2ecc71;
+      --green-dim: rgba(46, 204, 113, 0.15);
+      --amber: #f1c40f;
+      --amber-dim: rgba(241, 196, 15, 0.15);
+      --teal: #00d2d3;
+      --teal-dim: rgba(0, 210, 211, 0.15);
+      --blue: #54a0ff;
+      --blue-dim: rgba(84, 160, 255, 0.15);
+      --purple: #a55eea;
+      --purple-dim: rgba(165, 94, 234, 0.15);
+      --coral: #ff9f43;
+      --coral-dim: rgba(255, 159, 67, 0.15);
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 32px;
+      --spacing-lg: 64px;
+      --spacing-xl: 128px;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --motion-fast: 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      --motion-med: 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      --motion-slow: 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
 
-.noise {
-  position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.02;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-}
-.progress-container {
-  position: fixed; top: 0; left: 0; width: 100%; height: 3px;
-  background: transparent; z-index: 1000;
-}
-.progress-bar {
-  height: 100%; width: 0%;
-  background: linear-gradient(90deg, var(--teal), var(--red));
-  box-shadow: 0 0 12px var(--red-glow);
-  transition: width 0.1s ease-out;
-}
+    [data-mode="dark"] {
+      --bg: #050505;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #181818 0%, #050505 100%);
+      --surface: #141414;
+      --surface-hover: #1e1e1e;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-hover: rgba(255, 255, 255, 0.24);
+      --text-primary: #f8f8f8;
+      --text-secondary: #d0d0d0;
+      --text-tertiary: #b5b5b5;
+      --link-color: #00d2d3;
+      --link-hover-color: #ff4d4d;
+      --shadow: 0 16px 60px rgba(0, 0, 0, 0.7);
+      --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
 
-/* Floating Chapter Nav */
-.chapter-nav {
-  position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
-  z-index: 90; display: flex; flex-direction: column; gap: 6px;
-  padding: 12px 8px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 100px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow); opacity: 0; transition: opacity 0.4s;
-}
-.chapter-nav.visible { opacity: 1; }
-.chapter-nav a {
-  display: block; width: 10px; height: 10px; border-radius: 50%;
-  background: var(--border); border: 1px solid var(--border);
-  text-decoration: none; transition: all 0.3s; position: relative;
-}
-.chapter-nav a:hover { background: var(--text-tertiary); transform: scale(1.3); }
-.chapter-nav a[aria-current="true"] {
-  background: var(--teal); border-color: var(--teal);
-  box-shadow: 0 0 8px rgba(0, 210, 211, 0.4);
-}
-.chapter-nav a .tooltip {
-  position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
-  white-space: nowrap; font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase;
-  color: var(--text-primary); background: var(--surface);
-  border: 1px solid var(--border); border-radius: 6px;
-  padding: 4px 10px; pointer-events: none; opacity: 0; transition: opacity 0.2s;
-}
-.chapter-nav a:hover .tooltip { opacity: 1; }
+    [data-mode="light"] {
+      --bg: #f5f5f7;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #e8ecf3 100%);
+      --surface: #ffffff;
+      --surface-hover: #f9fafb;
+      --border: rgba(15, 23, 42, 0.08);
+      --border-hover: rgba(15, 23, 42, 0.18);
+      --text-primary: #111827;
+      --text-secondary: #374151;
+      --text-tertiary: #6b7280;
+      --link-color: #0f766e;
+      --link-hover-color: #b91c1c;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      --card-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+    }
 
-/* Toggle */
-.mode-switch {
-  position: fixed; top: 24px; right: 24px; z-index: 100;
-  display: flex; gap: 4px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 100px; padding: 4px;
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow);
-}
-.mode-switch button {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;
-  border: none; border-radius: 100px; padding: 8px 16px;
-  cursor: pointer; background: transparent; color: var(--text-tertiary);
-  transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-.mode-switch button:hover { color: var(--text-primary); }
-.mode-switch button[aria-pressed="true"] {
-  background: var(--text-primary); color: var(--bg);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Animations */
-.reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.reveal.active { opacity: 1; transform: translateY(0); }
-.stagger-1 { transition-delay: 0.08s; }
-.stagger-2 { transition-delay: 0.16s; }
-.stagger-3 { transition-delay: 0.24s; }
-.stagger-4 { transition-delay: 0.32s; }
-.stagger-5 { transition-delay: 0.40s; }
-.stagger-6 { transition-delay: 0.48s; }
+    body {
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background .4s, color .4s;
+      min-height: 100vh;
+    }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  .reveal { opacity: 1 !important; transform: none !important; }
-}
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -48px;
+      z-index: 999;
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 14px;
+      transition: top var(--motion-fast);
+    }
 
-/* ================================ HERO ================================ */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  justify-content: center; align-items: center; text-align: center;
-  padding: var(--spacing-xl) var(--spacing-md);
-  position: relative; overflow: hidden;
-}
-.hero-bg-glow {
-  position: absolute; top: 50%; left: 50%;
-  width: 120vw; height: 120vw; transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(230, 57, 38, 0.08) 0%, transparent 60%);
-  animation: pulse-slow 8s ease-in-out infinite alternate;
-  pointer-events: none; z-index: -1;
-}
-@keyframes pulse-slow {
-  0% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.92); }
-  100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.15); }
-}
-.hero-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
-  font-weight: 500; color: var(--red); margin-bottom: var(--spacing-md);
-  padding: 8px 16px; background: rgba(230, 57, 38, 0.05);
-  border: 1px solid rgba(230, 57, 38, 0.1); border-radius: 100px;
-}
-.hero h1 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(56px, 10vw, 140px);
-  line-height: 0.95; color: var(--text-primary);
-  max-width: 1100px; margin-bottom: var(--spacing-md); letter-spacing: -0.02em;
-}
-.hero h1 em {
-  font-style: italic; color: var(--red); position: relative; display: inline-block;
-  text-shadow: 0 0 40px var(--red-glow);
-}
-.hero h1 em::after {
-  content: ''; position: absolute; bottom: 10%; left: 0;
-  width: 100%; height: 0.1em; background: var(--red); opacity: 0.3;
-  transform: skewX(-15deg); z-index: -1;
-}
-.hero-sub {
-  font-size: clamp(17px, 2vw, 21px); color: var(--text-secondary);
-  max-width: 65ch; margin: 0 auto var(--spacing-lg); line-height: 1.65; font-weight: 300;
-}
-.hero-author { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.hero-author-name {
-  font-family: 'Instrument Serif', serif;
-  font-size: 32px; font-weight: 500; color: var(--text-primary);
-}
-.hero-author-role {
-  font-size: 15px; color: var(--text-tertiary);
-  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
-}
-.hero-credit {
-  margin-top: 24px; font-size: 13px; color: var(--text-tertiary);
-  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
-}
-.hero-credit a { color: var(--text-tertiary); text-decoration: none; }
-.hero-credit a:hover { color: var(--text-secondary); }
-.scroll-indicator {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  opacity: 0.6; animation: fade-scroll 3s ease-in-out infinite;
-}
-@keyframes fade-scroll { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
-.scroll-text {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  text-transform: uppercase; letter-spacing: 2px;
-}
-.scroll-line {
-  width: 1px; height: 60px;
-  background: linear-gradient(to bottom, var(--text-primary), transparent);
-}
+    .skip-link:focus-visible {
+      top: 16px;
+    }
 
-/* ================================ SECTIONS ================================ */
-section { padding: 96px var(--spacing-md); max-width: 1200px; margin: 0 auto; }
-.s-header { margin-bottom: var(--spacing-lg); }
-.s-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px; letter-spacing: 3px; font-weight: 500;
-  text-transform: uppercase; color: var(--red);
-  margin-bottom: var(--spacing-sm);
-  display: flex; align-items: center; gap: 12px;
-}
-.s-label::before { content: ''; width: 24px; height: 1px; background: var(--red); }
-.s-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(40px, 6vw, 64px);
-  line-height: 1.1; color: var(--text-primary); max-width: 800px;
-}
-.s-title em { font-style: italic; color: var(--teal); }
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  max-width: 100%; margin: 0 auto;
-}
+    a {
+      color: var(--link-color);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
 
-/* ================================ CARDS ================================ */
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: var(--card-shadow);
-}
-.card:hover {
-  transform: translateY(-2px); border-color: var(--border-hover);
-  background: var(--surface-hover);
-}
+    a:hover {
+      color: var(--link-hover-color);
+      text-decoration-color: var(--link-hover-color);
+    }
 
-/* Angle Cards - BIGGER */
-.angle-stack {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-sm); margin-bottom: var(--spacing-md);
-}
-.angle { padding: 40px 36px; display: flex; flex-direction: column; height: 100%; }
-.angle-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; letter-spacing: 2px;
-  text-transform: uppercase; margin-bottom: var(--spacing-md);
-  padding: 6px 12px; border-radius: 6px; align-self: flex-start;
-  background: rgba(255,255,255,0.05); font-weight: 500;
-}
-.angle-text {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(22px, 2.5vw, 28px);
-  color: var(--text-primary); line-height: 1.35;
-}
-.section-footnotes {
-  margin-top: var(--spacing-md);
-  padding-top: var(--spacing-sm);
-  border-top: 1px solid var(--border);
-}
-.section-footnotes p {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px; color: var(--text-tertiary);
-  letter-spacing: 0.3px; line-height: 1.6;
-}
+    :focus-visible {
+      outline: 3px solid var(--teal);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
 
-/* Callout / Quote */
-.callout {
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: linear-gradient(90deg, rgba(0, 210, 211, 0.05), transparent);
-  border-left: 4px solid var(--teal);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(22px, 2.8vw, 30px);
-  font-style: italic; color: var(--text-secondary); line-height: 1.45;
-  margin: var(--spacing-lg) auto; max-width: 65ch;
-}
-.callout span { color: var(--teal); font-style: normal; font-weight: 500; }
-.callout.red-border {
-  border-left-color: var(--red);
-  background: linear-gradient(90deg, rgba(255, 77, 77, 0.05), transparent);
-}
-.callout.red-border span { color: var(--red); }
-.callout-attr {
-  display: block; margin-top: 16px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px; font-style: normal;
-  color: var(--text-tertiary); letter-spacing: 0.5px;
-}
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
 
-/* Data Grid */
-.data-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);
-}
-.data-card {
-  padding: var(--spacing-md); display: flex; flex-direction: column;
-  justify-content: space-between; min-height: 200px;
-}
-.dc-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 56px; line-height: 1; margin-bottom: var(--spacing-xs);
-}
-.dc-content { display: flex; flex-direction: column; gap: 8px; }
-.dc-label { font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
-.dc-src {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  color: var(--text-tertiary); letter-spacing: 0.5px;
-  border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;
-}
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+      z-index: 1000;
+    }
 
-/* Truth Strip - BIGGER labels */
-.truth-strip {
-  display: grid; grid-template-columns: 1fr; gap: 1px;
-  background: var(--border); border-radius: var(--radius-md); overflow: hidden;
-  margin-top: var(--spacing-lg); border: 1px solid var(--border);
-}
-.truth {
-  background: var(--bg); padding: var(--spacing-md);
-  display: grid; grid-template-columns: 100px 1fr;
-  gap: var(--spacing-md); align-items: center; transition: background 0.3s;
-}
-.truth:hover { background: var(--surface); }
-.truth-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 22px; font-weight: 500;
-}
-.truth-text { font-size: 17px; color: var(--text-secondary); line-height: 1.55; }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--red));
+      box-shadow: 0 0 12px var(--red-glow);
+      transition: width 0.1s ease-out;
+    }
 
-/* Paradox */
-.paradox-container {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: var(--spacing-sm); margin-bottom: var(--spacing-md);
-}
-.paradox-card {
-  padding: var(--spacing-lg); position: relative; overflow: hidden;
-}
-.paradox-bg { position: absolute; inset: 0; opacity: 0.05; }
-.adopt .paradox-bg { background: linear-gradient(135deg, var(--green), transparent 60%); }
-.roi .paradox-bg { background: linear-gradient(135deg, var(--red), transparent 60%); }
-.paradox-content { position: relative; z-index: 1; }
-.paradox-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 80px; line-height: 1;
-  color: var(--text-primary); margin-bottom: var(--spacing-sm);
-}
-.paradox-desc {
-  font-size: 17px; color: var(--text-secondary); line-height: 1.65; max-width: 50ch;
-}
-.paradox-bridge {
-  text-align: center;
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(24px, 3vw, 36px);
-  color: var(--text-primary); padding: var(--spacing-md);
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  background: var(--surface);
-}
-.paradox-bridge span { color: var(--red); font-weight: 500; }
+    /* Floating Chapter Nav */
+    .chapter-nav {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
 
-/* Persona Grid */
-.persona-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);
-}
-.persona {
-  padding: var(--spacing-lg); display: flex; flex-direction: column;
-  gap: var(--spacing-sm);
-}
-.persona-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px; letter-spacing: 1px;
-  text-transform: uppercase; padding: 4px 12px;
-  border-radius: 100px; align-self: flex-start;
-  border: 1px solid currentColor; opacity: 0.8;
-}
-.persona-stat {
-  font-family: 'Instrument Serif', serif;
-  font-size: 48px; line-height: 1; color: var(--text-primary);
-}
-.persona-action { font-size: 16px; color: var(--text-secondary); line-height: 1.6; }
-.persona-verdict {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(22px, 2.5vw, 28px);
-  line-height: 1.2; color: var(--text-primary);
-  border-top: 1px solid var(--border);
-  padding-top: var(--spacing-sm); margin-top: auto;
-}
+    .chapter-nav.visible {
+      opacity: 1;
+    }
 
-/* Receipts - BIGGER numbers */
-.receipts {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);
-}
-.receipt {
-  padding: var(--spacing-md); display: flex; flex-direction: column;
-  justify-content: space-between; min-height: 160px;
-}
-.receipt-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 52px; line-height: 1;
-  color: var(--text-primary); margin-bottom: var(--spacing-xs);
-  font-variant-numeric: tabular-nums;
-}
-.receipt-label { font-size: 15px; color: var(--text-secondary); line-height: 1.45; }
+    .chapter-nav a {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.3s;
+      position: relative;
+    }
 
-/* Journey Stages */
-.journey {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-sm); margin-top: var(--spacing-lg);
-}
-.stage { padding: var(--spacing-md); display: flex; flex-direction: column; gap: var(--spacing-sm); }
-.stage-num {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  letter-spacing: 2px; font-weight: 500;
-}
-.stage-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 28px; color: var(--text-primary); line-height: 1.15;
-}
-.stage-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.6; }
-.stage-verdict {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  letter-spacing: 0.5px; border-top: 1px solid var(--border);
-  padding-top: var(--spacing-sm); margin-top: auto;
-}
+    .chapter-nav a:hover {
+      background: var(--text-tertiary);
+      transform: scale(1.3);
+    }
 
-/* Frozen Middle Band */
-.band-visual { max-width: 900px; }
-.band-row {
-  display: grid; grid-template-columns: 140px 1fr 60px;
-  gap: var(--spacing-sm); align-items: center;
-  margin-bottom: var(--spacing-sm);
-}
-.band-role {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase;
-  color: var(--text-secondary); text-align: right;
-}
-.band-bar-wrap {
-  height: 44px; border-radius: 100px; overflow: hidden;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-}
-.band-bar {
-  height: 100%; border-radius: 100px; width: 0%;
-  display: flex; align-items: center; padding-left: 16px;
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  letter-spacing: 0.5px; text-transform: uppercase;
-  color: rgba(255,255,255,0.85); white-space: nowrap;
-  transition: width var(--motion-slow);
-}
-.band-pct {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px; color: var(--text-primary); font-variant-numeric: tabular-nums;
-}
-.execs .band-bar { background: linear-gradient(90deg, rgba(46,204,113,0.3), rgba(46,204,113,0.7)); }
-.mgr .band-bar {
-  background: linear-gradient(90deg, rgba(255,77,77,0.4), rgba(255,77,77,0.85));
-  box-shadow: 0 0 20px rgba(255,77,77,0.15);
-}
-.mgr .band-bar-wrap {
-  border-color: rgba(255,77,77,0.3);
-  box-shadow: 0 0 16px rgba(255,77,77,0.08);
-}
-.ics .band-bar { background: linear-gradient(90deg, rgba(241,196,15,0.3), rgba(241,196,15,0.7)); }
+    .chapter-nav a[aria-current="true"] {
+      background: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 0 8px rgba(0, 210, 211, 0.4);
+    }
 
-/* AI Pulse */
-.pulse-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-sm);
-}
-.pulse-dim { padding: var(--spacing-md); }
-.pulse-header {
-  display: flex; align-items: center; gap: 10px; margin-bottom: var(--spacing-xs);
-}
-.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-.pulse-name {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; letter-spacing: 1px;
-  text-transform: uppercase; font-weight: 500; color: var(--text-primary);
-}
-.pulse-q {
-  font-size: 15px; color: var(--text-secondary);
-  line-height: 1.5; margin-bottom: var(--spacing-sm);
-}
-.pulse-meter {
-  height: 6px; border-radius: 100px; overflow: hidden;
-  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
-}
-.pulse-meter-fill {
-  height: 100%; border-radius: 100px;
-  width: 0%; transition: width var(--motion-slow);
-}
+    .chapter-nav a .tooltip {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
 
-/* ================================ STEPS - REDESIGNED ================================ */
-.sequence-header {
-  text-align: center; margin-bottom: var(--spacing-lg);
-}
-.sequence-header .s-label { justify-content: center; }
-.sequence-header .s-label::before { display: none; }
-.sequence-header .s-title { margin: 0 auto; text-align: center; }
+    .chapter-nav a:hover .tooltip {
+      opacity: 1;
+    }
 
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0; max-width: 1100px; margin: 0 auto var(--spacing-lg);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  overflow: hidden; background: var(--surface);
-}
-.step-cell {
-  padding: 40px 32px;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 12px;
-  transition: background 0.3s;
-  position: relative;
-}
-.step-cell:nth-child(3n) { border-right: none; }
-.step-cell:nth-child(n+4) { border-bottom: none; }
-.step-cell:hover { background: var(--surface-hover); }
-.step-cell-num {
-  font-family: 'Instrument Serif', serif;
-  font-size: 64px; line-height: 1; letter-spacing: -0.02em;
-}
-.step-cell-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 24px; color: var(--text-primary); line-height: 1.2;
-}
-.step-cell-desc {
-  font-size: 15px; color: var(--text-tertiary); line-height: 1.55;
-}
+    /* Toggle */
+    .mode-switch {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+    }
 
-/* Closing */
-.closing-breath { width: 100px; margin: 0 auto 48px; }
-.closing-q {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(32px, 5vw, 64px);
-  color: var(--text-primary); max-width: 800px; margin-bottom: 32px;
-}
-.closing-coda {
-  font-size: 17px; color: var(--text-secondary); max-width: 65ch;
-  margin: 0 auto 24px;
-}
-.closing-coda:last-of-type { margin-bottom: 56px; }
+    .mode-switch button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 100px;
+      padding: 8px 16px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-tertiary);
+      transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
-/* Sources */
-.sources-card { padding: 24px; margin-bottom: 24px; }
-.sources-card p { margin-bottom: 12px; font-size: 17px; }
-.sources-card p:last-child { margin-bottom: 0; font-size: 16px; }
-.sources-list {
-  list-style: none; padding-left: 0; margin: 0;
-  font-size: 16px; line-height: 1.7;
-}
-.sources-list li { padding: 8px 0; border-bottom: 1px solid var(--border); }
-.sources-list li:last-child { border-bottom: none; }
+    .mode-switch button:hover {
+      color: var(--text-primary);
+    }
 
-/* Footer */
-footer {
-  padding: var(--spacing-lg); text-align: center;
-  border-top: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-tertiary);
-}
-footer p, footer div { font-size: inherit; }
+    .mode-switch button[aria-pressed="true"] {
+      background: var(--text-primary);
+      color: var(--bg);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0); border: 0; white-space: nowrap;
-}
+    /* Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+        transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
 
-/* ================================ RESPONSIVE ================================ */
-@media (max-width: 768px) {
-  :root { --spacing-xl: 80px; --spacing-lg: 48px; --spacing-md: 24px; }
-  section { padding: 64px var(--spacing-md); }
-  .hero h1 { font-size: 48px; }
-  .band-row { grid-template-columns: 1fr; gap: 8px; }
-  .band-role { text-align: left; font-size: 16px; }
-  .band-pct { display: none; }
-  .steps-grid { grid-template-columns: 1fr; }
-  .step-cell { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
-  .step-cell:last-child { border-bottom: none !important; }
-  .chapter-nav { display: none; }
-  .mode-switch { top: 12px; right: 12px; }
-  .paradox-container { grid-template-columns: 1fr; }
-  .persona-grid { grid-template-columns: 1fr; }
-  .angle-text { font-size: 20px; }
-}
-</style>
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 {
+      transition-delay: 0.08s;
+    }
+
+    .stagger-2 {
+      transition-delay: 0.16s;
+    }
+
+    .stagger-3 {
+      transition-delay: 0.24s;
+    }
+
+    .stagger-4 {
+      transition-delay: 0.32s;
+    }
+
+    .stagger-5 {
+      transition-delay: 0.40s;
+    }
+
+    .stagger-6 {
+      transition-delay: 0.48s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* ================================ HERO ================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: var(--spacing-xl) var(--spacing-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120vw;
+      height: 120vw;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(230, 57, 38, 0.08) 0%, transparent 60%);
+      animation: pulse-slow 8s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes pulse-slow {
+      0% {
+        opacity: 0.55;
+        transform: translate(-50%, -50%) scale(0.92);
+      }
+
+      100% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.15);
+      }
+    }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--red);
+      margin-bottom: var(--spacing-md);
+      padding: 8px 16px;
+      background: rgba(230, 57, 38, 0.05);
+      border: 1px solid rgba(230, 57, 38, 0.1);
+      border-radius: 100px;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(56px, 10vw, 140px);
+      line-height: 0.95;
+      color: var(--text-primary);
+      max-width: 1100px;
+      margin-bottom: var(--spacing-md);
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--red);
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 0 40px var(--red-glow);
+    }
+
+    .hero h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: 10%;
+      left: 0;
+      width: 100%;
+      height: 0.1em;
+      background: var(--red);
+      opacity: 0.3;
+      transform: skewX(-15deg);
+      z-index: -1;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2vw, 21px);
+      color: var(--text-secondary);
+      max-width: 65ch;
+      margin: 0 auto var(--spacing-lg);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .hero-author {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-author-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .hero-author-role {
+      font-size: 15px;
+      color: var(--text-tertiary);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-credit {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-credit a {
+      color: var(--text-tertiary);
+      text-decoration: none;
+    }
+
+    .hero-credit a:hover {
+      color: var(--text-secondary);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.6;
+      animation: fade-scroll 3s ease-in-out infinite;
+    }
+
+    @keyframes fade-scroll {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .scroll-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--text-primary), transparent);
+    }
+
+    /* ================================ SECTIONS ================================ */
+    section {
+      padding: 96px var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .s-header {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .s-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 3px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .s-label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .s-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.1;
+      color: var(--text-primary);
+      max-width: 800px;
+    }
+
+    .s-title em {
+      font-style: italic;
+      color: var(--teal);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ================================ CARDS ================================ */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: var(--card-shadow);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-hover);
+      background: var(--surface-hover);
+    }
+
+    /* Angle Cards - BIGGER */
+    .angle-stack {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .angle {
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .angle-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-md);
+      padding: 6px 12px;
+      border-radius: 6px;
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.05);
+      font-weight: 500;
+    }
+
+    .angle-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(22px, 2.5vw, 28px);
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+
+    .section-footnotes {
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-sm);
+      border-top: 1px solid var(--border);
+    }
+
+    .section-footnotes p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.3px;
+      line-height: 1.6;
+    }
+
+    /* Callout / Quote */
+    .callout {
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: linear-gradient(90deg, rgba(0, 210, 211, 0.05), transparent);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(22px, 2.8vw, 30px);
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin: var(--spacing-lg) auto;
+      max-width: 65ch;
+    }
+
+    .callout span {
+      color: var(--teal);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .callout.red-border {
+      border-left-color: var(--red);
+      background: linear-gradient(90deg, rgba(255, 77, 77, 0.05), transparent);
+    }
+
+    .callout.red-border span {
+      color: var(--red);
+    }
+
+    .callout-attr {
+      display: block;
+      margin-top: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-style: normal;
+      color: var(--text-tertiary);
+      letter-spacing: 0.5px;
+    }
+
+    /* Data Grid */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .data-card {
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+    }
+
+    .dc-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 56px;
+      line-height: 1;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .dc-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dc-label {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .dc-src {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.5px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    /* Truth Strip - BIGGER labels */
+    .truth-strip {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: var(--spacing-lg);
+      border: 1px solid var(--border);
+    }
+
+    .truth {
+      background: var(--bg);
+      padding: var(--spacing-md);
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: var(--spacing-md);
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .truth:hover {
+      background: var(--surface);
+    }
+
+    .truth-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .truth-text {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* Paradox */
+    .paradox-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .paradox-card {
+      padding: var(--spacing-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .paradox-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+    }
+
+    .adopt .paradox-bg {
+      background: linear-gradient(135deg, var(--green), transparent 60%);
+    }
+
+    .roi .paradox-bg {
+      background: linear-gradient(135deg, var(--red), transparent 60%);
+    }
+
+    .paradox-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .paradox-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 80px;
+      line-height: 1;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .paradox-desc {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 50ch;
+    }
+
+    .paradox-bridge {
+      text-align: center;
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(24px, 3vw, 36px);
+      color: var(--text-primary);
+      padding: var(--spacing-md);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+
+    .paradox-bridge span {
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    /* Persona Grid */
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .persona {
+      padding: var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .persona-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      align-self: flex-start;
+      border: 1px solid currentColor;
+      opacity: 0.8;
+    }
+
+    .persona-stat {
+      font-family: 'Instrument Serif', serif;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--text-primary);
+    }
+
+    .persona-action {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .persona-verdict {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(22px, 2.5vw, 28px);
+      line-height: 1.2;
+      color: var(--text-primary);
+      border-top: 1px solid var(--border);
+      padding-top: var(--spacing-sm);
+      margin-top: auto;
+    }
+
+    /* Receipts - BIGGER numbers */
+    .receipts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .receipt {
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 160px;
+    }
+
+    .receipt-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 52px;
+      line-height: 1;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-xs);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .receipt-label {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    /* Journey Stages */
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+    }
+
+    .stage {
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .stage-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+    .stage-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      color: var(--text-primary);
+      line-height: 1.15;
+    }
+
+    .stage-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .stage-verdict {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      border-top: 1px solid var(--border);
+      padding-top: var(--spacing-sm);
+      margin-top: auto;
+    }
+
+    /* Frozen Middle Band */
+    .band-visual {
+      max-width: 900px;
+    }
+
+    .band-row {
+      display: grid;
+      grid-template-columns: 140px 1fr 60px;
+      gap: var(--spacing-sm);
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .band-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-align: right;
+    }
+
+    .band-bar-wrap {
+      height: 44px;
+      border-radius: 100px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+    }
+
+    .band-bar {
+      height: 100%;
+      border-radius: 100px;
+      width: 0%;
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+      white-space: nowrap;
+      transition: width var(--motion-slow);
+    }
+
+    .band-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .execs .band-bar {
+      background: linear-gradient(90deg, rgba(46, 204, 113, 0.3), rgba(46, 204, 113, 0.7));
+    }
+
+    .mgr .band-bar {
+      background: linear-gradient(90deg, rgba(255, 77, 77, 0.4), rgba(255, 77, 77, 0.85));
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.15);
+    }
+
+    .mgr .band-bar-wrap {
+      border-color: rgba(255, 77, 77, 0.3);
+      box-shadow: 0 0 16px rgba(255, 77, 77, 0.08);
+    }
+
+    .ics .band-bar {
+      background: linear-gradient(90deg, rgba(241, 196, 15, 0.3), rgba(241, 196, 15, 0.7));
+    }
+
+    /* AI Pulse */
+    .pulse-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-sm);
+    }
+
+    .pulse-dim {
+      padding: var(--spacing-md);
+    }
+
+    .pulse-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .pulse-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .pulse-q {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .pulse-meter {
+      height: 6px;
+      border-radius: 100px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+    }
+
+    .pulse-meter-fill {
+      height: 100%;
+      border-radius: 100px;
+      width: 0%;
+      transition: width var(--motion-slow);
+    }
+
+    /* ================================ STEPS - REDESIGNED ================================ */
+    .sequence-header {
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .sequence-header .s-label {
+      justify-content: center;
+    }
+
+    .sequence-header .s-label::before {
+      display: none;
+    }
+
+    .sequence-header .s-title {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      max-width: 1100px;
+      margin: 0 auto var(--spacing-lg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .step-cell {
+      padding: 40px 32px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.3s;
+      position: relative;
+    }
+
+    .step-cell:nth-child(3n) {
+      border-right: none;
+    }
+
+    .step-cell:nth-child(n+4) {
+      border-bottom: none;
+    }
+
+    .step-cell:hover {
+      background: var(--surface-hover);
+    }
+
+    .step-cell-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 64px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .step-cell-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .step-cell-desc {
+      font-size: 17px;
+      color: var(--text-tertiary);
+      line-height: 1.55;
+    }
+
+    /* Closing */
+    .closing-breath {
+      width: 100px;
+      margin: 0 auto 48px;
+    }
+
+    .closing-message-card {
+      padding: 72px 56px;
+      text-align: center;
+      max-width: 920px;
+      margin: 48px auto;
+      background: var(--surface);
+    }
+
+    .closing-lead {
+      font-size: clamp(24px, 2.4vw, 34px);
+      color: var(--text-primary);
+      line-height: 1.3;
+      max-width: 28ch;
+      margin: 0 auto 28px;
+      text-wrap: balance;
+    }
+
+    .closing-q {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 5vw, 64px);
+      color: var(--text-primary);
+      max-width: 800px;
+      margin: 0 auto 28px;
+      line-height: 1.08;
+      text-wrap: balance;
+    }
+
+    .closing-coda {
+      font-size: clamp(24px, 2.2vw, 32px);
+      color: var(--text-primary);
+      max-width: 30ch;
+      line-height: 1.35;
+      margin: 0 auto;
+      text-wrap: balance;
+    }
+
+    /* Sources */
+    .sources-card {
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .sources-card p {
+      margin-bottom: 12px;
+      font-size: 17px;
+    }
+
+    .sources-card p:last-child {
+      margin-bottom: 0;
+      font-size: 16px;
+    }
+
+    .sources-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .sources-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sources-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* Footer */
+    footer {
+      padding: var(--spacing-lg);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    footer p,
+    footer div {
+      font-size: inherit;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+      white-space: nowrap;
+    }
+
+    /* ================================ RESPONSIVE ================================ */
+    @media (max-width: 768px) {
+      :root {
+        --spacing-xl: 80px;
+        --spacing-lg: 48px;
+        --spacing-md: 24px;
+      }
+
+      section {
+        padding: 64px var(--spacing-md);
+      }
+
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .band-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .band-role {
+        text-align: left;
+        font-size: 16px;
+      }
+
+      .band-pct {
+        display: none;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-cell {
+        border-right: none !important;
+        border-bottom: 1px solid var(--border) !important;
+      }
+
+      .step-cell:last-child {
+        border-bottom: none !important;
+      }
+
+      .chapter-nav {
+        display: none;
+      }
+
+      .mode-switch {
+        top: 12px;
+        right: 12px;
+      }
+
+      .closing-message-card {
+        padding: 44px 28px;
+        margin: 32px auto;
+      }
+
+      .closing-lead {
+        font-size: clamp(21px, 6vw, 26px);
+        max-width: 24ch;
+      }
+
+      .closing-coda {
+        font-size: clamp(21px, 5.6vw, 26px);
+        max-width: 24ch;
+      }
+
+      .paradox-container {
+        grid-template-columns: 1fr;
+      }
+
+      .persona-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .angle-text {
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<a class="skip-link" href="#main-content">Skip to main content</a>
-<div class="noise" aria-hidden="true"></div>
-<div class="progress-container" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
-
-<div class="mode-switch" role="group" aria-label="Theme toggle">
-  <button aria-pressed="true" onclick="sw('dark',this)">Dark</button>
-  <button aria-pressed="false" onclick="sw('light',this)">Light</button>
-</div>
-
-<nav class="chapter-nav" id="chapterNav" aria-label="Chapter navigation">
-  <a href="#setup" data-chapter-link><span class="tooltip">The Setup</span></a>
-  <a href="#thirty-k" data-chapter-link><span class="tooltip">30,000 Feet</span></a>
-  <a href="#paradox" data-chapter-link><span class="tooltip">Core Paradox</span></a>
-  <a href="#usage-lie" data-chapter-link><span class="tooltip">Usage Lie</span></a>
-  <a href="#receipts" data-chapter-link><span class="tooltip">Logitech Receipts</span></a>
-  <a href="#garbage-can" data-chapter-link><span class="tooltip">Garbage Cans</span></a>
-  <a href="#frozen-middle" data-chapter-link><span class="tooltip">Frozen Middle</span></a>
-  <a href="#ai-pulse" data-chapter-link><span class="tooltip">AI Pulse</span></a>
-  <a href="#the-sequence" data-chapter-link><span class="tooltip">The Sequence</span></a>
-  <a href="#sources" data-chapter-link><span class="tooltip">Sources</span></a>
-</nav>
-
-<!-- ========== HERO ========== -->
-<div class="hero" id="main-content">
-  <div class="hero-bg-glow" aria-hidden="true"></div>
-  <div class="hero-label reveal stagger-1">The Measurement Problem</div>
-  <h1 class="reveal stagger-2">Your AI Dashboard<br>Is <em>Lying</em> to You</h1>
-  <p class="hero-sub reveal stagger-3">The real signal is not usage. It is deletion: which reports stopped being written, which workflows collapsed, which artifacts simply vanished.</p>
-
-  <div class="hero-author reveal stagger-4">
-    <div class="hero-author-name">Eric Porres</div>
-    <div class="hero-author-role">Head of Global AI, Logitech</div>
-    <div class="hero-author-role" style="font-size: 14px; opacity: 0.7; margin-top: 4px;">Beyond Reason &middot; via Jeremy Utley's Beyond the Prompt</div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="progress-container" aria-hidden="true">
+    <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <div class="hero-credit reveal stagger-4" style="transition-delay: 0.6s;">
-    Visual companion by <a href="https://www.linkedin.com/in/danielpgreen" target="_blank" rel="noopener noreferrer">Daniel Green</a>
+  <div class="mode-switch" role="group" aria-label="Theme toggle">
+    <button aria-pressed="true" onclick="sw('dark',this)">Dark</button>
+    <button aria-pressed="false" onclick="sw('light',this)">Light</button>
   </div>
 
-  <div class="scroll-indicator reveal stagger-4" style="transition-delay: 1s;" aria-hidden="true">
-    <div class="scroll-line"></div>
-    <div class="scroll-text">Scroll</div>
-  </div>
-</div>
+  <nav class="chapter-nav" id="chapterNav" aria-label="Chapter navigation">
+    <a href="#setup" data-chapter-link><span class="tooltip">The Setup</span></a>
+    <a href="#thirty-k" data-chapter-link><span class="tooltip">30,000 Feet</span></a>
+    <a href="#paradox" data-chapter-link><span class="tooltip">Core Paradox</span></a>
+    <a href="#usage-lie" data-chapter-link><span class="tooltip">Usage Lie</span></a>
+    <a href="#receipts" data-chapter-link><span class="tooltip">Logitech Receipts</span></a>
+    <a href="#garbage-can" data-chapter-link><span class="tooltip">Garbage Cans</span></a>
+    <a href="#frozen-middle" data-chapter-link><span class="tooltip">Frozen Middle</span></a>
+    <a href="#ai-pulse" data-chapter-link><span class="tooltip">AI Pulse</span></a>
+    <a href="#the-sequence" data-chapter-link><span class="tooltip">The Sequence</span></a>
+    <a href="#sources" data-chapter-link><span class="tooltip">Sources</span></a>
+  </nav>
 
-<!-- ========== SETUP ========== -->
-<section id="setup" aria-labelledby="setup-title">
-  <div class="s-header reveal">
-    <div class="s-label">The Setup</div>
-    <h2 class="s-title" id="setup-title">Three angles. Same blind spot.</h2>
-  </div>
+  <main id="main-content">
+    <!-- ========== HERO ========== -->
+    <div class="hero">
+      <div class="hero-bg-glow" aria-hidden="true"></div>
+      <div class="hero-label reveal stagger-1">The Measurement Problem</div>
+      <h1 class="reveal stagger-2">Your AI Dashboard<br>Is <em>Lying</em> to You</h1>
+      <p class="hero-sub reveal stagger-3">The real signal is not usage. It is deletion: which reports stopped being
+        written, which workflows collapsed, which artifacts simply vanished.</p>
 
-  <div class="angle-stack">
-    <div class="card angle reveal stagger-1">
-      <div class="angle-tag" style="color:var(--amber)">Enterprise</div>
-      <div class="angle-text">The engineer with 40 prompts shows up on the dashboard. The finance manager who killed 3 reports does not.</div>
-    </div>
-    <div class="card angle reveal stagger-2">
-      <div class="angle-tag" style="color:var(--blue)">Cognitive</div>
-      <div class="angle-text">Addition is visible. Nobody credits you for the ten things you said no to.</div>
-    </div>
-    <div class="card angle reveal stagger-3">
-      <div class="angle-tag" style="color:var(--teal)">Personal</div>
-      <div class="angle-text">AI makes adding easy. The real question: what do you subtract so the right things get your time?</div>
-    </div>
-  </div>
+      <div class="hero-author reveal stagger-4">
+        <div class="hero-author-name"><a href="https://www.linkedin.com/in/ericporres" target="_blank"
+            rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Eric Porres</a></div>
+        <div class="hero-author-role">Head of Global AI, Logitech</div>
+        <div class="hero-author-role" style="font-size: 14px; opacity: 0.7; margin-top: 4px;">Beyond Reason &middot; via
+          Jeremy Utley's Beyond the Prompt</div>
+      </div>
 
-  <div class="section-footnotes reveal">
-    <p>Cognitive framing via Leidy Klotz, <em>Subtract: The Untapped Science of Less</em></p>
-  </div>
+      <div class="hero-credit reveal stagger-4" style="transition-delay: 0.6s;">
+        Visual companion by <a href="https://www.linkedin.com/in/danielpgreen" target="_blank"
+          rel="noopener noreferrer">Daniel P. Green</a>
+      </div>
 
-  <div class="card callout reveal">The thing to measure is not AI usage.<br>It is <span>deletion.</span><br><br>What reports stopped getting written?<br>What workflows collapsed?<br>What artifacts vanished because an agent replaced them?<span class="callout-attr">Eric Porres, Head of Global AI, Logitech</span></div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ========== 30K FT ========== -->
-<section id="thirty-k" aria-labelledby="thirty-k-title">
-  <div class="s-header reveal">
-    <div class="s-label">01 / The View from 30,000 Feet</div>
-    <h2 class="s-title" id="thirty-k-title">The numbers sound reassuring.<br>They are not.</h2>
-  </div>
-
-  <div class="data-grid">
-    <div class="card data-card reveal stagger-1">
-      <div class="dc-num" style="color:var(--green)"><span data-count-up data-target="88" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">of orgs report using AI</div>
-        <div class="dc-src"><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" rel="noopener noreferrer">McKinsey, State of AI 2025</a></div>
+      <div class="scroll-indicator reveal stagger-4" style="transition-delay: 1s;" aria-hidden="true">
+        <div class="scroll-line"></div>
+        <div class="scroll-text">Scroll</div>
       </div>
     </div>
-    <div class="card data-card reveal stagger-2">
-      <div class="dc-num" style="color:var(--red)"><span data-count-up data-target="6" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">earn &gt;5% EBIT from it</div>
-        <div class="dc-src"><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" rel="noopener noreferrer">McKinsey, State of AI 2025</a></div>
+
+  <!-- ========== SETUP ========== -->
+  <section id="setup" aria-labelledby="setup-title">
+    <div class="s-header reveal">
+      <div class="s-label">The Setup</div>
+      <h2 class="s-title" id="setup-title">Three angles. Same blind spot.</h2>
+    </div>
+
+    <div class="angle-stack">
+      <div class="card angle reveal stagger-1">
+        <div class="angle-tag" style="color:var(--amber)">Enterprise</div>
+        <div class="angle-text">The engineer with 40 prompts shows up on the dashboard.<br><br>The finance manager who
+          killed 3 reports does not.</div>
+      </div>
+      <div class="card angle reveal stagger-2">
+        <div class="angle-tag" style="color:var(--blue)">Cognitive</div>
+        <div class="angle-text">Addition is visible.<br><br>Nobody credits you for the ten things you said no to.</div>
+      </div>
+      <div class="card angle reveal stagger-3">
+        <div class="angle-tag" style="color:var(--teal)">Personal</div>
+        <div class="angle-text">AI makes adding easy.<br><br>The real question: what do you subtract so the right things
+          get your time?</div>
       </div>
     </div>
-    <div class="card data-card reveal stagger-3">
-      <div class="dc-num" style="color:var(--amber)"><span data-count-up data-target="8.6" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">agents in production</div>
-        <div class="dc-src">Recon Analytics</div>
+
+    <div class="section-footnotes reveal">
+      <p>Cognitive framing via Leidy Klotz, <em>Subtract: The Untapped Science of Less</em></p>
+    </div>
+
+    <div class="card callout reveal">The thing to measure is not AI usage.<br>It is <span>deletion.</span><br><br>What
+      reports stopped getting written?<br>What workflows collapsed?<br>What artifacts vanished because an agent replaced
+      them?<span class="callout-attr">Eric Porres, Head of Global AI, Logitech</span></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ========== 30K FT ========== -->
+  <section id="thirty-k" aria-labelledby="thirty-k-title">
+    <div class="s-header reveal">
+      <div class="s-label">01 / The View from 30,000 Feet</div>
+      <h2 class="s-title" id="thirty-k-title">The numbers sound reassuring.<br>They are not.</h2>
+    </div>
+
+    <div class="data-grid">
+      <div class="card data-card reveal stagger-1">
+        <div class="dc-num" style="color:var(--green)"><span data-count-up data-target="88" data-suffix="%">0%</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">of orgs report using AI</div>
+          <div class="dc-src"><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai"
+              target="_blank" rel="noopener noreferrer">McKinsey, State of AI 2025</a></div>
+        </div>
+      </div>
+      <div class="card data-card reveal stagger-2">
+        <div class="dc-num" style="color:var(--red)"><span data-count-up data-target="6" data-suffix="%">0%</span></div>
+        <div class="dc-content">
+          <div class="dc-label">earn &gt;5% EBIT from it</div>
+          <div class="dc-src"><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai"
+              target="_blank" rel="noopener noreferrer">McKinsey, State of AI 2025</a></div>
+        </div>
+      </div>
+      <div class="card data-card reveal stagger-3">
+        <div class="dc-num" style="color:var(--amber)"><span data-count-up data-target="8.6" data-suffix="%">0%</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">agents in production</div>
+          <div class="dc-src">Recon Analytics</div>
+        </div>
+      </div>
+      <div class="card data-card reveal stagger-4">
+        <div class="dc-num" style="color:var(--blue)"><span data-count-up data-target="11.7" data-suffix="%">0%</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">of work automatable now</div>
+          <div class="dc-src"><a href="https://iceberg.mit.edu/" target="_blank" rel="noopener noreferrer">MIT / Oak
+              Ridge, Iceberg Index</a></div>
+        </div>
       </div>
     </div>
-    <div class="card data-card reveal stagger-4">
-      <div class="dc-num" style="color:var(--blue)"><span data-count-up data-target="11.7" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">of work automatable now</div>
-        <div class="dc-src"><a href="https://iceberg.mit.edu/" target="_blank" rel="noopener noreferrer">MIT / Oak Ridge, Iceberg Index</a></div>
+
+    <div class="data-grid">
+      <div class="card data-card reveal stagger-1">
+        <div class="dc-num" style="color:var(--teal)"><span data-count-up data-target="82" data-suffix="%">0%</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">of leaders use GenAI weekly</div>
+          <div class="dc-src"><a href="https://knowledge.wharton.upenn.edu/special-report/2025-ai-adoption-report/"
+              target="_blank" rel="noopener noreferrer">Wharton, 2025 AI Adoption Report</a></div>
+        </div>
+      </div>
+      <div class="card data-card reveal stagger-2">
+        <div class="dc-num" style="color:var(--teal)"><span data-count-up data-target="72" data-suffix="%">0%</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">formally measuring ROI</div>
+          <div class="dc-src"><a href="https://knowledge.wharton.upenn.edu/special-report/2025-ai-adoption-report/"
+              target="_blank" rel="noopener noreferrer">Wharton, 2025 AI Adoption Report</a></div>
+        </div>
+      </div>
+      <div class="card data-card reveal stagger-3">
+        <div class="dc-num" style="color:var(--red)"><span data-count-up data-target="63.7" data-suffix="%">0%</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">no formalized AI initiative</div>
+          <div class="dc-src">Recon Analytics</div>
+        </div>
+      </div>
+      <div class="card data-card reveal stagger-4">
+        <div class="dc-num" style="color:var(--amber)">$<span data-count-up data-target="1.2" data-suffix="T">0T</span>
+        </div>
+        <div class="dc-content">
+          <div class="dc-label">in wages automatable</div>
+          <div class="dc-src"><a href="https://iceberg.mit.edu/" target="_blank" rel="noopener noreferrer">MIT / Oak
+              Ridge, Iceberg Index</a></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="data-grid">
-    <div class="card data-card reveal stagger-1">
-      <div class="dc-num" style="color:var(--teal)"><span data-count-up data-target="82" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">of leaders use GenAI weekly</div>
-        <div class="dc-src"><a href="https://knowledge.wharton.upenn.edu/special-report/2025-ai-adoption-report/" target="_blank" rel="noopener noreferrer">Wharton, 2025 AI Adoption Report</a></div>
+    <div class="truth-strip reveal">
+      <div class="truth">
+        <div class="truth-num" style="color:var(--green)">Truth 1</div>
+        <div class="truth-text">AI capabilities are real and accelerating faster than most people realize.</div>
+      </div>
+      <div class="truth">
+        <div class="truth-num" style="color:var(--amber)">Truth 2</div>
+        <div class="truth-text">Enterprise adoption is mainstream but shallow. Production deployment remains rare.</div>
+      </div>
+      <div class="truth">
+        <div class="truth-num" style="color:var(--red)">Truth 3</div>
+        <div class="truth-text">Most people's daily work has not changed nearly as much as those first two facts
+          suggest.</div>
       </div>
     </div>
-    <div class="card data-card reveal stagger-2">
-      <div class="dc-num" style="color:var(--teal)"><span data-count-up data-target="72" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">formally measuring ROI</div>
-        <div class="dc-src"><a href="https://knowledge.wharton.upenn.edu/special-report/2025-ai-adoption-report/" target="_blank" rel="noopener noreferrer">Wharton, 2025 AI Adoption Report</a></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ========== PARADOX ========== -->
+  <section id="paradox" aria-labelledby="paradox-title">
+    <div class="s-header reveal">
+      <div class="s-label">02 / The Core Paradox</div>
+      <h2 class="s-title" id="paradox-title">Everyone adopted AI.<br>Almost nobody <em>changed.</em></h2>
+    </div>
+
+    <div class="paradox-container">
+      <div class="card paradox-card adopt reveal">
+        <div class="paradox-bg"></div>
+        <div class="paradox-content">
+          <div class="paradox-num"><span data-count-up data-target="88" data-suffix="%">0%</span></div>
+          <div class="paradox-desc"><strong>report using AI</strong> in at least one business function. Weekly exec
+            usage exceeds 80%. Three in four see positive returns. The adoption story looks complete.</div>
+        </div>
+      </div>
+      <div class="card paradox-card roi reveal stagger-2">
+        <div class="paradox-bg"></div>
+        <div class="paradox-content">
+          <div class="paradox-num"><span data-count-up data-target="6" data-suffix="%">0%</span></div>
+          <div class="paradox-desc"><strong>earn meaningful EBIT from it.</strong> People try the applications. They
+            just do not change the work. Leaders misread this as an execution gap. It is a measurement gap.</div>
+        </div>
+      </div>
+      <div class="paradox-bridge reveal"
+        style="display: flex; justify-content: center; align-items: center; text-align: center;">The whole game is the
+        distance between <span>88%</span> and <span>6%</span>.</div>
+    </div>
+
+    <div class="card callout red-border reveal">AI adoption is not a training problem.<br>It is a <span>deletion
+        problem.</span><br><br>The models are good enough.<br>The analytics are fancy enough.<br>The real bottleneck:
+      who has permission to stop doing the old thing?<span class="callout-attr">Eric Porres, Head of Global AI,
+        Logitech</span></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ========== USAGE LIE ========== -->
+  <section id="usage-lie" aria-labelledby="usage-lie-title">
+    <div class="s-header reveal">
+      <div class="s-label">03 / The Seductive Lie of "Usage"</div>
+      <h2 class="s-title" id="usage-lie-title">Both show up as "active."<br>Only one changed anything.</h2>
+    </div>
+
+    <div class="persona-grid">
+      <div class="card persona engineer reveal">
+        <div class="persona-badge" style="color:var(--amber)">The Engineer</div>
+        <div class="persona-stat"><span data-count-up data-target="40">0</span> prompts</div>
+        <div class="persona-action">Experiments with copilot all day. Tries clever chains. Shares screenshots in Slack.
+          Never comes back next week.</div>
+        <div class="persona-verdict" style="color:var(--amber)">Curiosity &rarr; no change</div>
+      </div>
+      <div class="card persona finance reveal stagger-2">
+        <div class="persona-badge" style="color:var(--green)">The Finance Manager</div>
+        <div class="persona-stat"><span data-count-up data-target="3">0</span> reports deleted</div>
+        <div class="persona-action">Quietly moves three recurring reports into an agent. Never types them by hand again.
+          Work disappears from the system.</div>
+        <div class="persona-verdict" style="color:var(--green)">Deletion &rarr; transformation</div>
       </div>
     </div>
-    <div class="card data-card reveal stagger-3">
-      <div class="dc-num" style="color:var(--red)"><span data-count-up data-target="63.7" data-suffix="%">0%</span></div>
-      <div class="dc-content">
-        <div class="dc-label">no formalized AI initiative</div>
-        <div class="dc-src">Recon Analytics</div>
+
+    <div class="card callout reveal" style="margin-bottom: 32px;">Your dashboard measures
+      <span>curiosity.</span><br>Transformation shows up when artifacts <span>stop existing.</span><span
+        class="callout-attr">Eric Porres, Head of Global AI, Logitech</span></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ========== LOGITECH RECEIPTS ========== -->
+  <section id="receipts" aria-labelledby="receipts-title" style="padding-top: 48px;">
+    <div class="s-header reveal">
+      <div class="s-label">04 / Inside Logitech: Year One Receipts</div>
+      <h2 class="s-title" id="receipts-title">From "we think it's going well" to knowing exactly where.</h2>
+    </div>
+
+    <div class="receipts">
+      <div class="card receipt reveal stagger-1">
+        <div class="receipt-num"><span data-count-up data-target="6000" data-format="comma" data-suffix="+">0+</span>
+        </div>
+        <div class="receipt-label">workforce in analytics warehouse</div>
+      </div>
+      <div class="card receipt reveal stagger-2">
+        <div class="receipt-num" style="color:var(--green)"><span data-count-up data-target="95"
+            data-suffix="%">0%</span></div>
+        <div class="receipt-label">core employees on Gemini monthly</div>
+      </div>
+      <div class="card receipt reveal stagger-3">
+        <div class="receipt-num" style="color:var(--amber)"><span data-count-up data-target="1100" data-format="comma"
+            data-suffix="+">0+</span></div>
+        <div class="receipt-label">people who built custom assistants</div>
+      </div>
+      <div class="card receipt reveal stagger-4">
+        <div class="receipt-num" style="color:var(--amber)"><span data-count-up data-target="18"
+            data-suffix="%">0%</span></div>
+        <div class="receipt-label">builder rate (hardware company)</div>
       </div>
     </div>
-    <div class="card data-card reveal stagger-4">
-      <div class="dc-num" style="color:var(--amber)">$<span data-count-up data-target="1.2" data-suffix="T">0T</span></div>
-      <div class="dc-content">
-        <div class="dc-label">in wages automatable</div>
-        <div class="dc-src"><a href="https://iceberg.mit.edu/" target="_blank" rel="noopener noreferrer">MIT / Oak Ridge, Iceberg Index</a></div>
+    <div class="receipts">
+      <div class="card receipt reveal stagger-1">
+        <div class="receipt-num" style="color:var(--blue)"><span data-count-up data-target="3500" data-format="comma"
+            data-suffix="+">0+</span></div>
+        <div class="receipt-label">lines of Apps Script, built by AI</div>
+      </div>
+      <div class="card receipt reveal stagger-2">
+        <div class="receipt-num" style="color:var(--purple)">80/20</div>
+        <div class="receipt-label">top 20% drive 80% of activity</div>
+      </div>
+      <div class="card receipt reveal stagger-3">
+        <div class="receipt-num" style="color:var(--blue)"><span data-count-up data-target="8">0</span></div>
+        <div class="receipt-label">analytics views on the same story</div>
+      </div>
+      <div class="card receipt reveal stagger-4">
+        <div class="receipt-num" style="color:var(--purple)"><span data-count-up data-target="50"
+            data-suffix="+">0+</span></div>
+        <div class="receipt-label">attributes per employee enriched</div>
       </div>
     </div>
-  </div>
 
-  <div class="truth-strip reveal">
-    <div class="truth"><div class="truth-num" style="color:var(--green)">Truth 1</div><div class="truth-text">AI capabilities are real and accelerating faster than most people realize.</div></div>
-    <div class="truth"><div class="truth-num" style="color:var(--amber)">Truth 2</div><div class="truth-text">Enterprise adoption is mainstream but shallow. Production deployment remains rare.</div></div>
-    <div class="truth"><div class="truth-num" style="color:var(--red)">Truth 3</div><div class="truth-text">Most people's daily work has not changed nearly as much as those first two facts suggest.</div></div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ========== PARADOX ========== -->
-<section id="paradox" aria-labelledby="paradox-title">
-  <div class="s-header reveal">
-    <div class="s-label">02 / The Core Paradox</div>
-    <h2 class="s-title" id="paradox-title">Everyone adopted AI.<br>Almost nobody <em>changed.</em></h2>
-  </div>
-
-  <div class="paradox-container">
-    <div class="card paradox-card adopt reveal">
-      <div class="paradox-bg"></div>
-      <div class="paradox-content">
-        <div class="paradox-num"><span data-count-up data-target="88" data-suffix="%">0%</span></div>
-        <div class="paradox-desc"><strong>report using AI</strong> in at least one business function. Weekly exec usage exceeds 80%. Three in four see positive returns. The adoption story looks complete.</div>
+    <div class="journey">
+      <div class="card stage reveal stagger-1">
+        <div class="stage-num" style="color:var(--amber)">01</div>
+        <div class="stage-title">Sidecar Analytics</div>
+        <div class="stage-desc">Mapped usage across org chart, countries, and teams. Sunbursts by engagement tier.
+          Ridgelines of token distributions.</div>
+        <div class="stage-verdict" style="color:var(--amber)">Showed who experiments. Did not show who changed.</div>
+      </div>
+      <div class="card stage reveal stagger-2">
+        <div class="stage-num" style="color:var(--blue)">02</div>
+        <div class="stage-title">Behavior Over Volume</div>
+        <div class="stage-desc">Shifted to engagement profiles: inactive, dabblers, regulars, and power users. Asked
+          "what kind" instead of "how many."</div>
+        <div class="stage-verdict" style="color:var(--blue)">Revealed the frozen middle. Did not fix it.</div>
+      </div>
+      <div class="card stage reveal stagger-3">
+        <div class="stage-num" style="color:var(--teal)">03</div>
+        <div class="stage-title">Outcomes and Deletion</div>
+        <div class="stage-desc">Stopped asking "where are people using AI?" and started asking "where did work
+          disappear?"</div>
+        <div class="stage-verdict" style="color:var(--teal)">Analytics became receipts for deletion.</div>
       </div>
     </div>
-    <div class="card paradox-card roi reveal stagger-2">
-      <div class="paradox-bg"></div>
-      <div class="paradox-content">
-        <div class="paradox-num"><span data-count-up data-target="6" data-suffix="%">0%</span></div>
-        <div class="paradox-desc"><strong>earn meaningful EBIT from it.</strong> People try the applications. They just do not change the work. Leaders misread this as an execution gap. It is a measurement gap.</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ========== GARBAGE CAN ========== -->
+  <section id="garbage-can" aria-labelledby="garbage-can-title">
+    <div class="s-header reveal">
+      <div class="s-label">05 / Garbage Cans &amp; Bitter Lessons</div>
+      <h2 class="s-title" id="garbage-can-title">Obsess over outputs, not inputs.</h2>
+    </div>
+
+    <div class="paradox-container">
+      <div class="card paradox-card reveal">
+        <div class="paradox-content">
+          <div class="persona-badge" style="color:var(--red)">The Garbage Can</div>
+          <div class="stage-title" style="margin-top:16px;">Obsess over inputs</div>
+          <div class="paradox-desc" style="margin-top:12px;">Map every messy process. Untangle every handoff. Build
+            better tools to do old work faster. Feel mysteriously underwhelmed.</div>
+          <div class="persona-verdict" style="color:var(--red); margin-top:24px; font-size: clamp(18px, 2vw, 24px);">
+            Result: faster old work. Same old work.</div>
+        </div>
+      </div>
+      <div class="card paradox-card reveal stagger-2">
+        <div class="paradox-content">
+          <div class="persona-badge" style="color:var(--teal)">The Bitter Lesson</div>
+          <div class="stage-title" style="margin-top:16px;">Obsess over outputs</div>
+          <div class="paradox-desc" style="margin-top:12px;">Define "good." Feed AI examples. Let it route through
+            chaos. Then ask: if an agent produces this reliably, what can we delete?</div>
+          <div class="persona-verdict" style="color:var(--teal); margin-top:24px; font-size: clamp(18px, 2vw, 24px);">
+            Result: whole artifacts vanish. Whole rituals end.</div>
+        </div>
       </div>
     </div>
-    <div class="paradox-bridge reveal">The distance between <span>88%</span> and <span>6%</span> is the whole game.</div>
-  </div>
+  </section>
 
-  <div class="card callout red-border reveal">AI adoption is not a training problem.<br>It is a <span>deletion problem.</span><br><br>The models are good enough.<br>The analytics are fancy enough.<br>The real bottleneck: who has permission to stop doing the old thing?<span class="callout-attr">Eric Porres, Head of Global AI, Logitech</span></div>
-</section>
+  <div class="divider"></div>
 
-<div class="divider"></div>
-
-<!-- ========== USAGE LIE ========== -->
-<section id="usage-lie" aria-labelledby="usage-lie-title">
-  <div class="s-header reveal">
-    <div class="s-label">03 / The Seductive Lie of "Usage"</div>
-    <h2 class="s-title" id="usage-lie-title">Both show up as "active."<br>Only one changed anything.</h2>
-  </div>
-
-  <div class="persona-grid">
-    <div class="card persona engineer reveal">
-      <div class="persona-badge" style="color:var(--amber)">The Engineer</div>
-      <div class="persona-stat"><span data-count-up data-target="40">0</span> prompts</div>
-      <div class="persona-action">Experiments with copilot all day. Tries clever chains. Shares screenshots in Slack. Never comes back next week.</div>
-      <div class="persona-verdict" style="color:var(--amber)">Curiosity &rarr; no change</div>
+  <!-- ========== FROZEN MIDDLE ========== -->
+  <section id="frozen-middle" aria-labelledby="frozen-middle-title">
+    <div class="s-header reveal">
+      <div class="s-label">06 / The Frozen Middle</div>
+      <h2 class="s-title" id="frozen-middle-title">Execs are enthusiastic.<br>Managers are stuck in the middle.<br>ICs
+        are curious.</h2>
     </div>
-    <div class="card persona finance reveal stagger-2">
-      <div class="persona-badge" style="color:var(--green)">The Finance Manager</div>
-      <div class="persona-stat"><span data-count-up data-target="3">0</span> reports deleted</div>
-      <div class="persona-action">Quietly moves three recurring reports into an agent. Never types them by hand again. Work disappears from the system.</div>
-      <div class="persona-verdict" style="color:var(--green)">Deletion &rarr; transformation</div>
-    </div>
-  </div>
 
-  <div class="card callout reveal">Your dashboard measures <span>curiosity.</span><br>Transformation shows up when artifacts <span>stop existing.</span><span class="callout-attr">Eric Porres, Head of Global AI, Logitech</span></div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ========== LOGITECH RECEIPTS ========== -->
-<section id="receipts" aria-labelledby="receipts-title">
-  <div class="s-header reveal">
-    <div class="s-label">04 / Inside Logitech: Year One Receipts</div>
-    <h2 class="s-title" id="receipts-title">From "we think it's going well" to knowing exactly where.</h2>
-  </div>
-
-  <div class="receipts">
-    <div class="card receipt reveal stagger-1"><div class="receipt-num"><span data-count-up data-target="6000" data-format="comma" data-suffix="+">0+</span></div><div class="receipt-label">workforce in analytics warehouse</div></div>
-    <div class="card receipt reveal stagger-2"><div class="receipt-num" style="color:var(--green)"><span data-count-up data-target="95" data-suffix="%">0%</span></div><div class="receipt-label">core employees on Gemini monthly</div></div>
-    <div class="card receipt reveal stagger-3"><div class="receipt-num" style="color:var(--amber)"><span data-count-up data-target="1100" data-format="comma" data-suffix="+">0+</span></div><div class="receipt-label">people who built custom assistants</div></div>
-    <div class="card receipt reveal stagger-4"><div class="receipt-num" style="color:var(--amber)"><span data-count-up data-target="18" data-suffix="%">0%</span></div><div class="receipt-label">builder rate (hardware company)</div></div>
-  </div>
-  <div class="receipts">
-    <div class="card receipt reveal stagger-1"><div class="receipt-num" style="color:var(--blue)"><span data-count-up data-target="3500" data-format="comma" data-suffix="+">0+</span></div><div class="receipt-label">lines of Apps Script, built by AI</div></div>
-    <div class="card receipt reveal stagger-2"><div class="receipt-num" style="color:var(--purple)">80/20</div><div class="receipt-label">top 20% drive 80% of activity</div></div>
-    <div class="card receipt reveal stagger-3"><div class="receipt-num" style="color:var(--blue)"><span data-count-up data-target="8">0</span></div><div class="receipt-label">analytics views on the same story</div></div>
-    <div class="card receipt reveal stagger-4"><div class="receipt-num" style="color:var(--purple)"><span data-count-up data-target="50" data-suffix="+">0+</span></div><div class="receipt-label">attributes per employee enriched</div></div>
-  </div>
-
-  <div class="journey">
-    <div class="card stage reveal stagger-1">
-      <div class="stage-num" style="color:var(--amber)">01</div>
-      <div class="stage-title">Sidecar Analytics</div>
-      <div class="stage-desc">Mapped usage across org chart, countries, and teams. Sunbursts by engagement tier. Ridgelines of token distributions.</div>
-      <div class="stage-verdict" style="color:var(--amber)">Showed who experiments. Did not show who changed.</div>
-    </div>
-    <div class="card stage reveal stagger-2">
-      <div class="stage-num" style="color:var(--blue)">02</div>
-      <div class="stage-title">Behavior Over Volume</div>
-      <div class="stage-desc">Shifted to engagement profiles: inactive, dabblers, regulars, and power users. Asked "what kind" instead of "how many."</div>
-      <div class="stage-verdict" style="color:var(--blue)">Revealed the frozen middle. Did not fix it.</div>
-    </div>
-    <div class="card stage reveal stagger-3">
-      <div class="stage-num" style="color:var(--teal)">03</div>
-      <div class="stage-title">Outcomes and Deletion</div>
-      <div class="stage-desc">Stopped asking "where are people using AI?" and started asking "where did work disappear?"</div>
-      <div class="stage-verdict" style="color:var(--teal)">Analytics became receipts for deletion.</div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ========== GARBAGE CAN ========== -->
-<section id="garbage-can" aria-labelledby="garbage-can-title">
-  <div class="s-header reveal">
-    <div class="s-label">05 / Garbage Cans &amp; Bitter Lessons</div>
-    <h2 class="s-title" id="garbage-can-title">Obsess over outputs, not inputs.</h2>
-  </div>
-
-  <div class="paradox-container">
-    <div class="card paradox-card reveal">
-      <div class="paradox-content">
-        <div class="persona-badge" style="color:var(--red)">The Garbage Can</div>
-        <div class="stage-title" style="margin-top:16px;">Obsess over inputs</div>
-        <div class="paradox-desc" style="margin-top:12px;">Map every messy process. Untangle every handoff. Build better tools to do old work faster. Feel mysteriously underwhelmed.</div>
-        <div class="persona-verdict" style="color:var(--red); margin-top:24px; font-size: clamp(18px, 2vw, 24px);">Result: faster old work. Same old work.</div>
+    <div class="band-visual reveal">
+      <div class="band-row execs">
+        <div class="band-role">Executives</div>
+        <div class="band-bar-wrap">
+          <div class="band-bar" data-width="75%"><span class="band-bar-text">Enthusiastic adopters</span></div>
+        </div>
+        <div class="band-pct">75%</div>
+      </div>
+      <div class="band-row mgr">
+        <div class="band-role">Managers</div>
+        <div class="band-bar-wrap">
+          <div class="band-bar" data-width="28%"><span class="band-bar-text">Sporadic use</span></div>
+        </div>
+        <div class="band-pct">28%</div>
+      </div>
+      <div class="band-row ics">
+        <div class="band-role">ICs</div>
+        <div class="band-bar-wrap">
+          <div class="band-bar" data-width="62%"><span class="band-bar-text">High curiosity</span></div>
+        </div>
+        <div class="band-pct">62%</div>
+      </div>
+      <div class="card callout red-border"
+        style="margin-top:24px; font-size: 18px; font-style: normal; font-family: 'DM Sans', sans-serif;">
+        <strong style="color:var(--red)">The manager band owns KPIs, templates, compliance, and career
+          risk.</strong><br><br>They show sporadic experimentation but very little systematic redesign.<br><br>They hold
+        the permission to delete old work.<br><br>And they are the most pressured layer in the org.
       </div>
     </div>
-    <div class="card paradox-card reveal stagger-2">
-      <div class="paradox-content">
-        <div class="persona-badge" style="color:var(--teal)">The Bitter Lesson</div>
-        <div class="stage-title" style="margin-top:16px;">Obsess over outputs</div>
-        <div class="paradox-desc" style="margin-top:12px;">Define "good." Feed AI examples. Let it route through chaos. Then ask: if an agent produces this reliably, what can we delete?</div>
-        <div class="persona-verdict" style="color:var(--teal); margin-top:24px; font-size: clamp(18px, 2vw, 24px);">Result: whole artifacts vanish. Whole rituals end.</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ========== AI PULSE ========== -->
+  <section id="ai-pulse" aria-labelledby="ai-pulse-title" style="padding-top: 48px;">
+    <div class="s-header reveal">
+      <div class="s-label">07 / AI Pulse</div>
+      <h2 class="s-title" id="ai-pulse-title">Measure the pattern, not the snapshot.</h2>
+    </div>
+
+    <div class="pulse-grid">
+      <div class="card pulse-dim reveal stagger-1">
+        <div class="pulse-header">
+          <div class="pulse-dot" style="color:var(--red)"></div>
+          <div class="pulse-name">Consistency</div>
+        </div>
+        <div class="pulse-q">Is AI muscle memory, or a monthly stunt?</div>
+        <div class="pulse-meter">
+          <div class="pulse-meter-fill" style="background:var(--red)" data-width="72%"></div>
+        </div>
+      </div>
+      <div class="card pulse-dim reveal stagger-2">
+        <div class="pulse-header">
+          <div class="pulse-dot" style="color:var(--amber)"></div>
+          <div class="pulse-name">Intensity</div>
+        </div>
+        <div class="pulse-q">Are you pushing real work through it, or editing subject lines?</div>
+        <div class="pulse-meter">
+          <div class="pulse-meter-fill" style="background:var(--amber)" data-width="45%"></div>
+        </div>
+      </div>
+      <div class="card pulse-dim reveal stagger-3">
+        <div class="pulse-header">
+          <div class="pulse-dot" style="color:var(--green)"></div>
+          <div class="pulse-name">Creation</div>
+        </div>
+        <div class="pulse-q">Are you building things that live beyond you?</div>
+        <div class="pulse-meter">
+          <div class="pulse-meter-fill" style="background:var(--green)" data-width="18%"></div>
+        </div>
+      </div>
+      <div class="card pulse-dim reveal stagger-1">
+        <div class="pulse-header">
+          <div class="pulse-dot" style="color:var(--blue)"></div>
+          <div class="pulse-name">Impact</div>
+        </div>
+        <div class="pulse-q">Does your created work get reused, or die in drafts?</div>
+        <div class="pulse-meter">
+          <div class="pulse-meter-fill" style="background:var(--blue)" data-width="25%"></div>
+        </div>
+      </div>
+      <div class="card pulse-dim reveal stagger-2">
+        <div class="pulse-header">
+          <div class="pulse-dot" style="color:var(--purple)"></div>
+          <div class="pulse-name">Breadth</div>
+        </div>
+        <div class="pulse-q">Are you stuck in chat, or working across every tool?</div>
+        <div class="pulse-meter">
+          <div class="pulse-meter-fill" style="background:var(--purple)" data-width="55%"></div>
+        </div>
+      </div>
+      <div class="card pulse-dim reveal stagger-3">
+        <div class="pulse-header">
+          <div class="pulse-dot" style="color:var(--coral)"></div>
+          <div class="pulse-name">Skills Floor</div>
+        </div>
+        <div class="pulse-q">Have you built the baseline, or reinventing from scratch?</div>
+        <div class="pulse-meter">
+          <div class="pulse-meter-fill" style="background:var(--coral)" data-width="85%"></div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="divider"></div>
+  <div class="divider"></div>
 
-<!-- ========== FROZEN MIDDLE ========== -->
-<section id="frozen-middle" aria-labelledby="frozen-middle-title">
-  <div class="s-header reveal">
-    <div class="s-label">06 / The Frozen Middle</div>
-    <h2 class="s-title" id="frozen-middle-title">Execs are enthusiastic.<br>Managers are stuck in the middle.<br>ICs are curious.</h2>
-  </div>
-
-  <div class="band-visual reveal">
-    <div class="band-row execs">
-      <div class="band-role">Executives</div>
-      <div class="band-bar-wrap"><div class="band-bar" data-width="75%"><span class="band-bar-text">Enthusiastic adopters</span></div></div>
-      <div class="band-pct">75%</div>
+  <!-- ========== THE SEQUENCE - REDESIGNED ========== -->
+  <section id="the-sequence" class="closing" aria-labelledby="sequence-title">
+    <div class="sequence-header reveal">
+      <div class="s-label">08 / The Working Sequence</div>
+      <h2 class="s-title" id="sequence-title">Six steps from dashboard theater to real change.</h2>
     </div>
-    <div class="band-row mgr">
-      <div class="band-role">Managers</div>
-      <div class="band-bar-wrap"><div class="band-bar" data-width="28%"><span class="band-bar-text">Sporadic use</span></div></div>
-      <div class="band-pct">28%</div>
-    </div>
-    <div class="band-row ics">
-      <div class="band-role">ICs</div>
-      <div class="band-bar-wrap"><div class="band-bar" data-width="62%"><span class="band-bar-text">High curiosity</span></div></div>
-      <div class="band-pct">62%</div>
-    </div>
-    <div class="card callout red-border" style="margin-top:24px; font-size: 18px; font-style: normal; font-family: 'DM Sans', sans-serif;">
-      <strong style="color:var(--red)">The manager band owns KPIs, templates, compliance, and career risk.</strong> They show sporadic experimentation but very little systematic redesign. They hold the permission to delete old work. And they are the most pressured layer in the org.
-    </div>
-  </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- ========== AI PULSE ========== -->
-<section id="ai-pulse" aria-labelledby="ai-pulse-title">
-  <div class="s-header reveal">
-    <div class="s-label">07 / AI Pulse</div>
-    <h2 class="s-title" id="ai-pulse-title">Measure the pattern, not the snapshot.</h2>
-  </div>
-
-  <div class="pulse-grid">
-    <div class="card pulse-dim reveal stagger-1">
-      <div class="pulse-header"><div class="pulse-dot" style="color:var(--red)"></div><div class="pulse-name">Consistency</div></div>
-      <div class="pulse-q">Is AI muscle memory, or a monthly stunt?</div>
-      <div class="pulse-meter"><div class="pulse-meter-fill" style="background:var(--red)" data-width="72%"></div></div>
+    <div class="steps-grid reveal">
+      <div class="step-cell">
+        <div class="step-cell-num" style="color:var(--red)">1</div>
+        <div class="step-cell-title">Build one honest picture</div>
+        <div class="step-cell-desc">Join all AI exhaust into one place.<br><br>One row per person, enriched with org
+          context.</div>
+      </div>
+      <div class="step-cell">
+        <div class="step-cell-num" style="color:var(--amber)">2</div>
+        <div class="step-cell-title">Move beyond "active"</div>
+        <div class="step-cell-desc">Define behavioral segments: inactive, dabbler, regular, power user.<br><br>Not raw
+          volume.</div>
+      </div>
+      <div class="step-cell">
+        <div class="step-cell-num" style="color:var(--blue)">3</div>
+        <div class="step-cell-title">See the manager band</div>
+        <div class="step-cell-desc">Slice by reporting line.<br><br>Surface the frozen middle where change stalls.</div>
+      </div>
+      <div class="step-cell">
+        <div class="step-cell-num" style="color:var(--purple)">4</div>
+        <div class="step-cell-title">Tie analytics to deletion</div>
+        <div class="step-cell-desc">Measure cycle time collapse.<br><br>And the absence of old artifacts.</div>
+      </div>
+      <div class="step-cell">
+        <div class="step-cell-num" style="color:var(--coral)">5</div>
+        <div class="step-cell-title">Turn dashboards into conversations</div>
+        <div class="step-cell-desc">Use the data to spark uncomfortable, honest discussions.<br><br>About what to stop.
+        </div>
+      </div>
+      <div class="step-cell">
+        <div class="step-cell-num" style="color:var(--green)">6</div>
+        <div class="step-cell-title">Layer on coaching</div>
+        <div class="step-cell-desc">Offer specific next moves.<br><br>For individuals, teams, and leaders.</div>
+      </div>
     </div>
-    <div class="card pulse-dim reveal stagger-2">
-      <div class="pulse-header"><div class="pulse-dot" style="color:var(--amber)"></div><div class="pulse-name">Intensity</div></div>
-      <div class="pulse-q">Are you pushing real work through it, or editing subject lines?</div>
-      <div class="pulse-meter"><div class="pulse-meter-fill" style="background:var(--amber)" data-width="45%"></div></div>
+
+    <div class="divider closing-breath"></div>
+
+    <div class="card reveal closing-message-card">
+      <p class="closing-lead">The bridge is not another model, another pilot, or another training course.</p>
+      <p class="closing-q">Who has permission to say <em style="color:var(--red)">the old version is done?</em></p>
+      <p class="closing-coda">Your AI dashboard will not do that for you. But if you design it right, it will stop
+        letting you pretend you already have.</p>
     </div>
-    <div class="card pulse-dim reveal stagger-3">
-      <div class="pulse-header"><div class="pulse-dot" style="color:var(--green)"></div><div class="pulse-name">Creation</div></div>
-      <div class="pulse-q">Are you building things that live beyond you?</div>
-      <div class="pulse-meter"><div class="pulse-meter-fill" style="background:var(--green)" data-width="18%"></div></div>
+  </section>
+
+  <!-- ========== SOURCES ========== -->
+  <section id="sources" aria-labelledby="sources-title">
+      <div class="s-header reveal">
+        <div class="s-label">Sources &amp; Further Reading</div>
+        <h2 class="s-title" id="sources-title" style="font-size:32px;">The article behind this dashboard.</h2>
+      </div>
+
+      <div class="card sources-card reveal">
+        <p>This visual is a companion to Jeremy Utley's essay
+          <a href="https://www.jeremyutley.com/blog/your-ai-dashboard-is-lying-to-you" target="_blank"
+            rel="noopener noreferrer">"Your AI Dashboard Is Lying to You"</a>.
+        </p>
+        <p>Eric Porres also published the full piece on Substack in <a href="https://promptedbyeric.substack.com/"
+            target="_blank" rel="noopener noreferrer"><em>Beyond Reason</em></a>: <a
+            href="https://promptedbyeric.substack.com/p/your-ai-dashboard-is-lying-to-you?r=2u5zyx&amp;utm_campaign=post&amp;utm_medium=utley&amp;triedRedirect=true"
+            target="_blank" rel="noopener noreferrer">"Your AI Dashboard Is Lying to You (And What to Measure
+            Instead)"</a>.
+        </p>
+      </div>
+
+      <div class="card" style="padding:24px;">
+        <ul class="sources-list">
+          <li><strong>McKinsey:</strong> <a
+              href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank"
+              rel="noopener noreferrer">State of AI 2025</a></li>
+          <li><strong>Wharton:</strong> <a
+              href="https://knowledge.wharton.upenn.edu/special-report/2025-ai-adoption-report/" target="_blank"
+              rel="noopener noreferrer">2025 AI Adoption Report</a></li>
+          <li><strong>MIT / Oak Ridge:</strong> <a href="https://iceberg.mit.edu/" target="_blank"
+              rel="noopener noreferrer">Iceberg Index</a></li>
+          <li><strong>Harvard Business Review:</strong> <a
+              href="https://hbr.org/2026/02/why-ai-adoption-stalls-according-to-industry-data" target="_blank"
+              rel="noopener noreferrer">Why AI Adoption Stalls (February 2026)</a></li>
+          <li><strong>Matt Shumer:</strong> <a href="https://shumer.dev/something-big-is-happening" target="_blank"
+              rel="noopener noreferrer">"Something Big Is Happening"</a></li>
+          <li><strong>Ethan Mollick:</strong> <a
+              href="https://www.oneusefulthing.org/p/a-guide-to-which-ai-to-use-in-the" target="_blank"
+              rel="noopener noreferrer">AI in the Agentic Era</a></li>
+          <li><strong>Series, Part 1:</strong> <a
+              href="https://promptedbyeric.substack.com/p/the-death-of-dashboards-why-llm-native" target="_blank"
+              rel="noopener noreferrer">The Death of Dashboards: Why LLM-Native Analytics Will Bury Them</a></li>
+          <li><strong>Beyond the Prompt (Eric episode):</strong> <a
+              href="https://podcasts.apple.com/us/podcast/eric-porres-is-rewiring-logitechs-org-for-the-ai-age/id1721313249?i=1000702001693"
+              target="_blank" rel="noopener noreferrer">Eric Porres Is Rewiring Logitech's Org for the AI Age</a></li>
+          <li><strong>Methods of the Masters newsletter:</strong> <a href="https://www.jeremyutley.design/join"
+              target="_blank" rel="noopener noreferrer">Join the list</a></li>
+          <li><strong>Related essay:</strong> <a
+              href="https://www.jeremyutley.com/blog/the-rising-opportunity-cost-of-being-human" target="_blank"
+              rel="noopener noreferrer">The Rising Opportunity Cost of Being Human</a></li>
+        </ul>
+      </div>
+  </section>
+  </main>
+
+  <footer>
+    <div style="opacity:0.75; margin-bottom:12px;">
+      Visual synthesis of "Your AI Dashboard Is Lying to You (And What to Measure Instead)" by Eric Porres.
     </div>
-    <div class="card pulse-dim reveal stagger-1">
-      <div class="pulse-header"><div class="pulse-dot" style="color:var(--blue)"></div><div class="pulse-name">Impact</div></div>
-      <div class="pulse-q">Does your created work get reused, or die in drafts?</div>
-      <div class="pulse-meter"><div class="pulse-meter-fill" style="background:var(--blue)" data-width="25%"></div></div>
+    <div>
+      Original essay by Jeremy Utley on <a href="https://www.jeremyutley.com/blog/your-ai-dashboard-is-lying-to-you"
+        target="_blank" rel="noopener noreferrer">jeremyutley.com</a>. Also published by Eric Porres on <a
+        href="https://promptedbyeric.substack.com/p/your-ai-dashboard-is-lying-to-you?r=2u5zyx&amp;utm_campaign=post&amp;utm_medium=utley&amp;triedRedirect=true"
+        target="_blank" rel="noopener noreferrer">Beyond Reason</a>. Visual companion by <a
+        href="https://www.linkedin.com/in/danielpgreen" target="_blank" rel="noopener noreferrer">Daniel P. Green</a>.
     </div>
-    <div class="card pulse-dim reveal stagger-2">
-      <div class="pulse-header"><div class="pulse-dot" style="color:var(--purple)"></div><div class="pulse-name">Breadth</div></div>
-      <div class="pulse-q">Are you stuck in chat, or working across every tool?</div>
-      <div class="pulse-meter"><div class="pulse-meter-fill" style="background:var(--purple)" data-width="55%"></div></div>
-    </div>
-    <div class="card pulse-dim reveal stagger-3">
-      <div class="pulse-header"><div class="pulse-dot" style="color:var(--coral)"></div><div class="pulse-name">Skills Floor</div></div>
-      <div class="pulse-q">Have you built the baseline, or reinventing from scratch?</div>
-      <div class="pulse-meter"><div class="pulse-meter-fill" style="background:var(--coral)" data-width="85%"></div></div>
-    </div>
-  </div>
-</section>
+  </footer>
 
-<div class="divider"></div>
+  <script>
+    (function () {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-<!-- ========== THE SEQUENCE - REDESIGNED ========== -->
-<section id="the-sequence" class="closing" aria-labelledby="sequence-title">
-  <div class="sequence-header reveal">
-    <div class="s-label">08 / The Working Sequence</div>
-    <h2 class="s-title" id="sequence-title">Six steps from dashboard theater to real change.</h2>
-  </div>
-
-  <div class="steps-grid reveal">
-    <div class="step-cell">
-      <div class="step-cell-num" style="color:var(--red)">1</div>
-      <div class="step-cell-title">Build one honest picture</div>
-      <div class="step-cell-desc">Join all AI exhaust into one place. One row per person, enriched with org context.</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-cell-num" style="color:var(--amber)">2</div>
-      <div class="step-cell-title">Move beyond "active"</div>
-      <div class="step-cell-desc">Define behavioral segments: inactive, dabbler, regular, power user. Not raw volume.</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-cell-num" style="color:var(--blue)">3</div>
-      <div class="step-cell-title">See the manager band</div>
-      <div class="step-cell-desc">Slice by reporting line and surface the frozen middle where change stalls.</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-cell-num" style="color:var(--purple)">4</div>
-      <div class="step-cell-title">Tie analytics to deletion</div>
-      <div class="step-cell-desc">Measure cycle time collapse and the absence of old artifacts.</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-cell-num" style="color:var(--coral)">5</div>
-      <div class="step-cell-title">Turn dashboards into conversations</div>
-      <div class="step-cell-desc">Use the data to spark uncomfortable, honest discussions about what to stop.</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-cell-num" style="color:var(--green)">6</div>
-      <div class="step-cell-title">Layer on coaching</div>
-      <div class="step-cell-desc">Offer specific next moves for individuals, teams, and leaders.</div>
-    </div>
-  </div>
-
-  <div class="divider closing-breath"></div>
-
-  <p class="closing-coda reveal">The bridge is not another model, another pilot, or another training course.</p>
-  <div class="closing-q reveal">Who has permission to say<br><em style="color:var(--red)">the old version is done?</em></div>
-  <p class="closing-coda reveal">Your AI dashboard will not do that for you. But if you design it right, it will stop letting you pretend you already have.</p>
-</section>
-
-<!-- ========== SOURCES ========== -->
-<section id="sources" aria-labelledby="sources-title">
-  <div class="s-header reveal">
-    <div class="s-label">Sources &amp; Further Reading</div>
-    <h2 class="s-title" id="sources-title" style="font-size:32px;">The article behind this dashboard.</h2>
-  </div>
-
-  <div class="card sources-card reveal">
-    <p>This visual is a companion to the original essay
-      <a href="https://promptedbyeric.substack.com/p/your-ai-dashboard-is-lying-to-you?r=2u5zyx&amp;utm_campaign=post&amp;utm_medium=utley&amp;triedRedirect=true" target="_blank" rel="noopener noreferrer">"Your AI Dashboard Is Lying to You (And What to Measure Instead)"</a>
-      by Eric Porres in his Substack, <a href="https://promptedbyeric.substack.com/" target="_blank" rel="noopener noreferrer"><em>Beyond Reason</em></a>.
-    </p>
-    <p>For the full narrative, context, and commentary from Jeremy Utley, read it in situ on Substack.</p>
-  </div>
-
-  <div class="card" style="padding:24px;">
-    <ul class="sources-list">
-      <li><strong>McKinsey:</strong> <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" rel="noopener noreferrer">State of AI 2025</a></li>
-      <li><strong>Wharton:</strong> <a href="https://knowledge.wharton.upenn.edu/special-report/2025-ai-adoption-report/" target="_blank" rel="noopener noreferrer">2025 AI Adoption Report</a></li>
-      <li><strong>MIT / Oak Ridge:</strong> <a href="https://iceberg.mit.edu/" target="_blank" rel="noopener noreferrer">Iceberg Index</a></li>
-      <li><strong>Harvard Business Review:</strong> <a href="https://hbr.org/2026/02/why-ai-adoption-stalls-according-to-industry-data" target="_blank" rel="noopener noreferrer">Why AI Adoption Stalls (February 2026)</a></li>
-      <li><strong>Matt Shumer:</strong> <a href="https://shumer.dev/something-big-is-happening" target="_blank" rel="noopener noreferrer">"Something Big Is Happening"</a></li>
-      <li><strong>Ethan Mollick:</strong> <a href="https://www.oneusefulthing.org/p/a-guide-to-which-ai-to-use-in-the" target="_blank" rel="noopener noreferrer">AI in the Agentic Era</a></li>
-      <li><strong>Series, Part 1:</strong> <a href="https://promptedbyeric.substack.com/p/the-death-of-dashboards-why-llm-native" target="_blank" rel="noopener noreferrer">The Death of Dashboards: Why LLM-Native Analytics Will Bury Them</a></li>
-      <li><strong>Beyond the Prompt (Eric episode):</strong> <a href="https://podcasts.apple.com/us/podcast/eric-porres-is-rewiring-logitechs-org-for-the-ai-age/id1721313249?i=1000702001693" target="_blank" rel="noopener noreferrer">Eric Porres Is Rewiring Logitech's Org for the AI Age</a></li>
-      <li><strong>Methods of the Masters newsletter:</strong> <a href="https://www.jeremyutley.design/join" target="_blank" rel="noopener noreferrer">Join the list</a></li>
-      <li><strong>Related essay:</strong> <a href="https://www.jeremyutley.com/blog/the-rising-opportunity-cost-of-being-human" target="_blank" rel="noopener noreferrer">The Rising Opportunity Cost of Being Human</a></li>
-    </ul>
-  </div>
-</section>
-
-<footer>
-  <div style="opacity:0.75; margin-bottom:12px;">
-    Visual synthesis of "Your AI Dashboard Is Lying to You (And What to Measure Instead)" by Eric Porres.
-  </div>
-  <div>
-    Original essay on <a href="https://promptedbyeric.substack.com/p/your-ai-dashboard-is-lying-to-you?r=2u5zyx&amp;utm_campaign=post&amp;utm_medium=utley&amp;triedRedirect=true" target="_blank" rel="noopener noreferrer">Beyond Reason</a>, visual companion by <a href="https://www.linkedin.com/in/danielpgreen" target="_blank" rel="noopener noreferrer">Daniel Green</a>.
-  </div>
-</footer>
-
-<script>
-(function() {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function sw(m, el) {
-    document.documentElement.setAttribute('data-mode', m);
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.content = m === 'dark' ? '#050505' : '#f5f5f7';
-    document.querySelectorAll('.mode-switch button').forEach(b => {
-      b.setAttribute('aria-pressed', 'false');
-    });
-    el.setAttribute('aria-pressed', 'true');
-  }
-  window.sw = sw;
-
-  function animateCount(node) {
-    const target = parseFloat(node.dataset.target || '0');
-    const suffix = node.dataset.suffix || '';
-    const format = node.dataset.format || '';
-    const decimals = Number.isInteger(target) ? 0 : 1;
-    const duration = reduceMotion ? 0 : 1400;
-    const start = performance.now();
-    function render(value) {
-      let out = value.toFixed(decimals);
-      if (format === 'comma') {
-        out = Number(out).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: decimals });
+      function sw(m, el) {
+        document.documentElement.setAttribute('data-mode', m);
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = m === 'dark' ? '#050505' : '#f5f5f7';
+        document.querySelectorAll('.mode-switch button').forEach(b => {
+          b.setAttribute('aria-pressed', 'false');
+        });
+        if (el) {
+          el.setAttribute('aria-pressed', 'true');
+        } else {
+          const selected = document.querySelector(`.mode-switch button[onclick*="'${m}'"]`);
+          if (selected) selected.setAttribute('aria-pressed', 'true');
+        }
+        try {
+          localStorage.setItem('preferred-mode', m);
+        } catch (_err) { }
       }
-      node.textContent = out + suffix;
-    }
-    function tick(now) {
-      if (duration === 0) { render(target); return; }
-      const elapsed = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - elapsed, 3);
-      render(target * eased);
-      if (elapsed < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
+      window.sw = sw;
 
-  const seen = new WeakSet();
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const node = entry.target;
-      node.classList.add('active');
-      if (seen.has(node)) return;
-      seen.add(node);
-      node.querySelectorAll('[data-count-up]').forEach(animateCount);
-      node.querySelectorAll('.band-bar, .pulse-meter-fill').forEach(bar => {
-        if (bar.dataset.width) bar.style.width = bar.dataset.width;
+      try {
+        const savedMode = localStorage.getItem('preferred-mode');
+        if (savedMode === 'dark' || savedMode === 'light') {
+          sw(savedMode);
+        }
+      } catch (_err) { }
+
+      function animateCount(node) {
+        const target = parseFloat(node.dataset.target || '0');
+        const suffix = node.dataset.suffix || '';
+        const format = node.dataset.format || '';
+        const decimals = Number.isInteger(target) ? 0 : 1;
+        const duration = reduceMotion ? 0 : 1400;
+        const start = performance.now();
+        function render(value) {
+          let out = value.toFixed(decimals);
+          if (format === 'comma') {
+            out = Number(out).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: decimals });
+          }
+          node.textContent = out + suffix;
+        }
+        function tick(now) {
+          if (duration === 0) { render(target); return; }
+          const elapsed = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - elapsed, 3);
+          render(target * eased);
+          if (elapsed < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      const seen = new WeakSet();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const node = entry.target;
+          node.classList.add('active');
+          if (seen.has(node)) return;
+          seen.add(node);
+          node.querySelectorAll('[data-count-up]').forEach(animateCount);
+          node.querySelectorAll('.band-bar, .pulse-meter-fill').forEach(bar => {
+            if (bar.dataset.width) bar.style.width = bar.dataset.width;
+          });
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      document.querySelectorAll('[data-count-up]').forEach(counter => {
+        let parent = counter.closest('.reveal');
+        if (!parent) {
+          parent = counter.closest('.card') || counter.parentElement;
+          if (parent && !parent.classList.contains('reveal')) {
+            parent.classList.add('reveal');
+            observer.observe(parent);
+          }
+        }
       });
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  document.querySelectorAll('[data-count-up]').forEach(counter => {
-    let parent = counter.closest('.reveal');
-    if (!parent) {
-      parent = counter.closest('.card') || counter.parentElement;
-      if (parent && !parent.classList.contains('reveal')) {
-        parent.classList.add('reveal');
-        observer.observe(parent);
+      if (reduceMotion) {
+        document.querySelectorAll('.reveal').forEach(n => n.classList.add('active'));
+        document.querySelectorAll('[data-count-up]').forEach(animateCount);
+        document.querySelectorAll('.band-bar, .pulse-meter-fill').forEach(bar => {
+          if (bar.dataset.width) bar.style.width = bar.dataset.width;
+        });
       }
-    }
-  });
 
-  if (reduceMotion) {
-    document.querySelectorAll('.reveal').forEach(n => n.classList.add('active'));
-    document.querySelectorAll('[data-count-up]').forEach(animateCount);
-    document.querySelectorAll('.band-bar, .pulse-meter-fill').forEach(bar => {
-      if (bar.dataset.width) bar.style.width = bar.dataset.width;
-    });
-  }
+      function updateProgress() {
+        const scrollTop = window.scrollY;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        document.getElementById('progressBar').style.width = pct + '%';
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
 
-  function updateProgress() {
-    const scrollTop = window.scrollY;
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    document.getElementById('progressBar').style.width = pct + '%';
-  }
-  window.addEventListener('scroll', updateProgress, { passive: true });
+      const chapterNav = document.getElementById('chapterNav');
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+      const chapterLinks = Array.from(document.querySelectorAll('[data-chapter-link]'));
 
-  const chapterNav = document.getElementById('chapterNav');
-  const sections = Array.from(document.querySelectorAll('section[id]'));
-  const chapterLinks = Array.from(document.querySelectorAll('[data-chapter-link]'));
+      const heroEl = document.querySelector('.hero');
+      function updateChapterNav() {
+        chapterNav.classList.toggle('visible', window.scrollY > heroEl.offsetHeight * 0.6);
+      }
+      window.addEventListener('scroll', updateChapterNav, { passive: true });
 
-  const heroEl = document.querySelector('.hero');
-  function updateChapterNav() {
-    chapterNav.classList.toggle('visible', window.scrollY > heroEl.offsetHeight * 0.6);
-  }
-  window.addEventListener('scroll', updateChapterNav, { passive: true });
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          chapterLinks.forEach(link => {
+            link.setAttribute('aria-current', link.getAttribute('href') === '#' + id ? 'true' : 'false');
+          });
+        });
+      }, { threshold: 0.3, rootMargin: '-20% 0px -50% 0px' });
+      sections.forEach(s => sectionObserver.observe(s));
 
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const id = entry.target.id;
       chapterLinks.forEach(link => {
-        link.setAttribute('aria-current', link.getAttribute('href') === '#' + id ? 'true' : 'false');
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (!target) return;
+          if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          target.focus({ preventScroll: true });
+        });
       });
-    });
-  }, { threshold: 0.3, rootMargin: '-20% 0px -50% 0px' });
-  sections.forEach(s => sectionObserver.observe(s));
-
-  chapterLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-    });
-  });
-})();
-</script>
+    })();
+  </script>
 
 </body>
+
 </html>
